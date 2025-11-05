@@ -16,7 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from support.views import *
+from support.agentviews import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("",home,name="homepage"),
+    path("registration/",registration,name="registration"),
+    path("login/",user_login,name="login"),
+    path("logout/",user_logout,name="logout"),
+
+
+    # agent urls
+    path("dashboard/",dashboard,name="dashboard"),
+
 ]

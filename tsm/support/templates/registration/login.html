@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="flex w-full h-screen bg-gray-300 m-auto items-center justify-center">
+        <div class="bg-rose-500 border rounded-lg px-10">
+            <h2 class="text-green-500">{% if error %}{{error}}{% endif %}</h2>
+            <h2 class="my-5 font-semibold text-xl">Login</h2>
+            <div class="mb-10">
+                <form action="{% url 'login' %}" method="post" class="flex flex-col py-5 bg-blue-400 px-5">
+                    {% csrf_token %}
+                    <label for="username" class="text-sm font-semibold px-2 pb-1">Username</label>
+                    <input type="text" name="username" id="username" placeholder="Username" class="px-5 py-2 mb-3 rounded-lg outline-none">
+                    <label for="password" class="text-sm font-semibold px-2 pb-1">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Password" class="px-5 py-2 mb-3 rounded-lg outline-none">
+                    <input type="submit" value="Login" class="w-full bg-red-400 px-5 rounded py-2 cursor-pointer">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

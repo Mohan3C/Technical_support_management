@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Support Management Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="m-auto bg-rose-500 px-[10%] flex justify-between items-center py-5">
+        <div class="font-bold text-3xl">
+            <h2>TSM</h2>
+        </div>
+        <div class="flex justify-between w-80 font-semibold">
+            <a href="px-5">Home</a>
+            <a href="px-5">Contact</a>
+            <a href="px-5">About Us</a>
+        </div>
+        <div class="py-2 px-3 flex flex-row gap-5 font-semibold">
+            {% if request.user.is_authenticated %}
+            <h2>{{request.user.username}}</h2>
+            <form action="{% url 'logout' %}" method="post" >
+                {% csrf_token %}
+
+                <input type="submit" value="Logout" class="cursor-pointer">
+            </form>
+            {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'registration' %}">Register</a>
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+</body>
+</html>
