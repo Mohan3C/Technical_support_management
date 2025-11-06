@@ -19,7 +19,7 @@ def user_login(request):
             login(request,user)
 
             if user.role == "agent":
-                return render(request,"agent/dashboard.html")
+                return redirect('dashboard')
 
             return redirect('homepage')
         else:
@@ -28,7 +28,6 @@ def user_login(request):
     return render(request,"registration/login.html")
 
 def registration(request):
-    print(request.POST)
     if request.method == "POST":
         username = request.POST.get('username')
         pass1 = request.POST.get('password1')
@@ -49,7 +48,10 @@ def registration(request):
 
             login(request,user)
 
-            return redirect('homepage')
+            if user.role =="agent":
+                return redirect('dashboard')
+            else:
+                return redirect('homepage')
 
     return render(request,"registration/register.html")
 
