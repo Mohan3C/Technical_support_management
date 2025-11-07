@@ -1,23 +1,92 @@
 {% extends "user/base.html" %}
 
-{% load static %}
+{% load humanize %}
 
 {% block content %}
 
-<div class="bg-rose-200 lg:items-center lg:justify-center lg:flex-row px-[10%] flex flex-col h-screen ">
+<div class="h-screen  px-[10%] bg-rose-200 py-5">
+    <div class="bg-rose-200 -mx-[10%] py-2 flex justify-between items-center">
+        <h2 class="font-bold text-3xl">Dashboard</h2>
+        <a href="{% url 'raised_ticket' %}" class="px-4 py-2 bg-red-500 rounded ">Raise a ticket</a>
+    </div>
+    <div class="pt-10 grid grid-cols-3 gap-10 flex justify-betwwen  ">
+        <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg self-start">
+            <h2 class="font-bold text-2xl">My Tickets</h2>
+            <span class="px-1 text-red-500 font-semibold">{{total_ticket}}</span>
+            <div class="flex flex-1 justify-between items-between pt-5">
+                <h2>Open Tickets : {{open_ticket}} </h2>
+                <h2>Closed Tickets : {{closed_ticket}}</h2>
+            </div>
+        </div>
+        <div class="flex flex-col bg-white shadow-lg p-5 rounded-lg">
+            <h2 class="pb-3 font-bold"> Recent activity</h2>
+            <hr class="">
+            <div class="pt-2">
+                {% if activities %}
+                    {% for recent in activities %}
+                        {% if recent.model == 'Ticket' %}
+                            <p class="text-sm">Ticket: #{{recent.id}} "{{recent.title|truncatewords:3}}"- <span class="text-green-400">updated {{recent.update|naturaltime}}</span></p>
+                        {% else %}
+                            <p>Comment: Ticket-{{recent.ticket.id}} "{{recent.content|truncatewords:3}}" -{{recent.created_at|naturaltime}} </p>
+                        <h2>Raised an ticket</h2>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
 
-   <div class=" my-10">
-      <h2 class="mb-2 font-semibold text-2xl">Hi,{% if request.user.is_authenticated %}{{request.user.username}}{% else %}Guest{% endif %}</h2>
-      <h2 class="text-5xl font-bold mb-4 ">Welcome to TechSupport</h2>
-      <p class="text-lg mb-6 py-5">Your one-stop solution for all your technical support needs. We provide expert assistance
-         for hardware, software, and network issues.</p>
-      <a href="{% url 'ticket' %}" class="bg-rose-600 text-white px-6 py-3 rounded hover:bg-rose-700">Get Started</a>
-
-   </div>
-   <div class="">
-      <img src="{% static 'banner.png' %}" alt="Image">
-   </div>
-
+            </div>
+        </div>
+        <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg">
+            <h2 class="pb-2 font-bold">Recent Tickets</h2>
+            <hr>
+            <div class="pt-3 flex flex-1 justify-center px-0">
+                <table class=" w-full">
+                    <thead>
+                        <tr class="">
+                            <th class=" border">ID</th>
+                            <th class=" border">Title</th>
+                            <th class=" border">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if recent_tickets %}
+                        {% for ticket in recent_tickets %}
+                        <tr class="">
+                            <td class="px-2 border">#{{ticket.id}}</td>
+                            <td class="px-2 border truncate ">{{ticket.title|truncatewords:3}}</td>
+                            <td class="px-2 border">{{ticket.status}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg">
+            <h2 class="pb-2 font-bold">Open Tickets</h2>
+            <hr>
+            <div class="pt-3 flex flex-1 justify-center px-0">
+                <table class=" w-full">
+                    <thead>
+                        <tr class="">
+                            <th class=" border">ID</th>
+                            <th class=" border">Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if open_tickets %}
+                        {% for ticket in recent_tickets %}
+                        <tr class="">
+                            <td class="px-2 border">#{{ticket.id}}</td>
+                            <td class="px-2 border truncate ">{{ticket.title|truncatewords:3}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
 </div>
 
 {% endblock %}

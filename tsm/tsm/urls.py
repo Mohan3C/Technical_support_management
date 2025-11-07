@@ -22,11 +22,16 @@ from support.adminviews import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("",home,name="homepage"),
+
+    # login urls 
     path("registration/",registration,name="registration"),
     path("login/",user_login,name="login"),
     path("logout/",user_logout,name="logout"),
-    path("ticket/",ticket,name="ticket"),
+
+    # user urls 
+    path("",home,name="homepage"),
+    path("dashboard/",user_dashboard,name="user_dashboard"),
+    path("Ticket/New",raise_ticket,name="raised_ticket"),
 
 
     # agent urls

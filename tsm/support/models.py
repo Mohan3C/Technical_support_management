@@ -36,6 +36,7 @@ class Ticket(models.Model):
     priority = models.CharField(max_length=20,choices=priority_choice,default="medium")
     created_at = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to="Image/",blank=True,null=True)
 
     def __str__(self):
         return self.title

@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="m-auto bg-rose-500 px-[10%] flex justify-between items-center py-5">
+    <div class=" bg-rose-500 px-[10%] flex justify-between items-center py-4">
         <div class="font-bold text-3xl">
             <h2>TSM</h2>
         </div>
@@ -16,7 +16,7 @@
             <a href="px-5">Contact</a>
             <a href="px-5">About Us</a>
         </div>
-        <div class="py-2 px-3 flex flex-row gap-5 font-semibold">
+        <div class=" px-3 flex flex-row gap-5 font-semibold">
             {% if request.user.is_authenticated %}
             <h2>{{request.user.username}}</h2>
             <form action="{% url 'logout' %}" method="post" >

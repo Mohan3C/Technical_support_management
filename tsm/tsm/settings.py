@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "support"
+    "support",
+    "widget_tweaks",
+    "django.contrib.humanize",
 ]
 
 AUTH_USER_MODEL = 'support.User'
