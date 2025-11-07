@@ -19,9 +19,9 @@ def user_login(request):
             login(request,user)
 
             if user.role == "agent":
-                return redirect('dashboard')
-
-            return redirect('homepage')
+                return redirect('agentdashboard')
+            else:
+                return redirect('homepage')
         else:
             return render(request,"registration/login.html",{'error': "Invalid username or password"})
 
@@ -49,7 +49,7 @@ def registration(request):
             login(request,user)
 
             if user.role =="agent":
-                return redirect('dashboard')
+                return redirect('agentdashboard')
             else:
                 return redirect('homepage')
 
@@ -59,3 +59,6 @@ def user_logout(request):
     if request.method == "POST":
         logout(request)
         return redirect('homepage')
+    
+def ticket(request):
+    return render(request,"user/ticket.html")

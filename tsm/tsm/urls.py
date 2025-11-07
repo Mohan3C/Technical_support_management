@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from support.views import *
 from support.agentviews import *
+from support.adminviews import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,9 +26,21 @@ urlpatterns = [
     path("registration/",registration,name="registration"),
     path("login/",user_login,name="login"),
     path("logout/",user_logout,name="logout"),
+    path("ticket/",ticket,name="ticket"),
 
 
     # agent urls
-    path("dashboard/",dashboard,name="dashboard"),
+    path("agent/dashboard",agent_dashboard,name="agent_dashboard"),
+    path("agent/ticket",agent_ticket,name="agent_ticket"),
+    path("agent/progess_ticket",in_progress_ticket,name="agent_progress_ticket"),
+    path("agent/closed_ticket",agent_closed_ticket,name="agent_closed_ticket"),
+    path("agent/setting",agent_setting,name="agentsetting"),
+
+    # admin urls
+    path("admin/dashboard/",admin_dashboard,name="admindashboard"),
+    path("admin/manage_ticket/",manageticket,name="adminticket"),
+    path("admin/manage_agent/",manageAgent,name="adminagent"),
+    path("admin/manage_report/",report,name="report"),
+    path("admin/manage_user/",manageuser,name="manageUser")
 
 ]
