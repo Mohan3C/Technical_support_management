@@ -1,0 +1,36 @@
+{% extends "user/base.html" %}
+
+{% block content %}
+<div class="pt-5 bg-rose-200 h-screen">
+    <div class="flex flex-col bg-white mx-[8%] px-[2%] py-5 rounded-lg">
+        <h2 class="pb-2 font-bold">Recent Tickets</h2>
+        <hr>
+        <div class="pt-3 flex flex-1 justify-center px-0">
+            <table class=" w-full">
+                <thead>
+                    <tr class="">
+                        <th class="py-2 border">ID</th>
+                        <th class="py-2 border">Type</th>
+                        <th class="py-2 border">Title</th>
+                        <th class="py-2 border">Description</th>
+                        <th class="py-2 border">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if tickets %}
+                    {% for ticket in tickets %}
+                    <tr class="">
+                        <td class="px-2 py-2 border"><a href="{% url 'view_ticket' ticket.id %}">{{ticket.id}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border"><a href="{% url 'view_ticket' ticket.id %}">{{ticket.title}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.description}}</td>
+                        <td class="px-2 py-2 border">{{ticket.status}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

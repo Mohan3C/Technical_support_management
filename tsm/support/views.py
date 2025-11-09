@@ -103,8 +103,37 @@ def raise_ticket(request):
     
     return render(request,"user/raised_ticket.html",{"form":form})
 
-def view_ticket(request):
-    pass
+def view_ticket(request,id):
+    ticket  = Ticket.objects.prefetch_related("comments").get(id=id,created_by = request.user)
+
+    comments = ticket.comments.all().order_by("created_at")
+
+    context = {
+        "ticket":ticket,
+        "comments":comments,
+    }
+    return render(request,"user/view_ticket.html",context)
 
 def show_tickets(request):
-    pass
+    tickets = Ticket.objects.filter(created_by = request.user).order_by("-created_at")
+
+    return render(request,"user/all_ticket.html",{"tickets":tickets})
+
+def comment(request,id):
+    if request.method == "POST":
+        comment = request.POST.get('comment')
+        ticket = Ticket.objects.get(id=id)
+        if comment:
+            obj = Comment()
+            obj.ticket = ticket
+            obj.user = request.user
+            obj.content = comment
+            obj.save()
+
+            return redirect("view_ticket",id)
+    
+    return redirect("view_ticket",id)
+
+
+
+

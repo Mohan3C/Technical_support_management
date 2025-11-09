@@ -19,6 +19,8 @@ from django.urls import path
 from support.views import *
 from support.agentviews import *
 from support.adminviews import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +34,9 @@ urlpatterns = [
     path("",home,name="homepage"),
     path("dashboard/",user_dashboard,name="user_dashboard"),
     path("Ticket/New",raise_ticket,name="raised_ticket"),
+    path("all_Ticket/",show_tickets,name="all_tickets"),
+    path("Ticket/view/<int:id>/",view_ticket,name="view_ticket"),
+    path("Ticket/view/comment/<int:id>/",comment,name="comment"),
 
 
     # agent urls
@@ -49,3 +54,5 @@ urlpatterns = [
     path("admin/manage_user/",manageuser,name="manageUser")
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

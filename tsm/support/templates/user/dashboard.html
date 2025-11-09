@@ -10,27 +10,31 @@
         <a href="{% url 'raised_ticket' %}" class="px-4 py-2 bg-red-500 rounded ">Raise a ticket</a>
     </div>
     <div class="pt-10 grid grid-cols-3 gap-10 flex justify-betwwen  ">
-        <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg self-start">
-            <h2 class="font-bold text-2xl">My Tickets</h2>
-            <span class="px-1 text-red-500 font-semibold">{{total_ticket}}</span>
-            <div class="flex flex-1 justify-between items-between pt-5">
-                <h2>Open Tickets : {{open_ticket}} </h2>
-                <h2>Closed Tickets : {{closed_ticket}}</h2>
+        <a href="{% url 'all_tickets' %}" class="self-start">
+            <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg ">
+                <h2 class="font-bold text-2xl">My Tickets</h2>
+                <span class="px-1 text-red-500 font-semibold">{{total_ticket}}</span>
+                <div class="flex flex-1 justify-between items-between pt-5">
+                    <h2>Open Tickets : {{open_ticket}} </h2>
+                    <h2>Closed Tickets : {{closed_ticket}}</h2>
+                </div>
             </div>
-        </div>
+        </a>
         <div class="flex flex-col bg-white shadow-lg p-5 rounded-lg">
             <h2 class="pb-3 font-bold"> Recent activity</h2>
             <hr class="">
             <div class="pt-2">
                 {% if activities %}
-                    {% for recent in activities %}
-                        {% if recent.model == 'Ticket' %}
-                            <p class="text-sm">Ticket: #{{recent.id}} "{{recent.title|truncatewords:3}}"- <span class="text-green-400">updated {{recent.update|naturaltime}}</span></p>
-                        {% else %}
-                            <p>Comment: Ticket-{{recent.ticket.id}} "{{recent.content|truncatewords:3}}" -{{recent.created_at|naturaltime}} </p>
-                        <h2>Raised an ticket</h2>
-                        {% endif %}
-                    {% endfor %}
+                {% for recent in activities %}
+                {% if recent.model == 'Ticket' %}
+                <p class="text-sm">Ticket: #{{recent.id}} "{{recent.title|truncatewords:3}}"- <span
+                        class="text-green-400">updated {{recent.update|naturaltime}}</span></p>
+                {% else %}
+                <p>Comment: Ticket-{{recent.ticket.id}} "{{recent.content|truncatewords:3}}"
+                    -{{recent.created_at|naturaltime}} </p>
+                <h2>Raised an ticket</h2>
+                {% endif %}
+                {% endfor %}
                 {% endif %}
 
             </div>
@@ -76,7 +80,7 @@
                         {% if open_tickets %}
                         {% for ticket in recent_tickets %}
                         <tr class="">
-                            <td class="px-2 border">#{{ticket.id}}</td>
+                            <td class="px-2 border"># <a href="{% url 'view_ticket' ticket.id %}">{{ticket.id}}</a></td>
                             <td class="px-2 border truncate ">{{ticket.title|truncatewords:3}}</td>
                         </tr>
                         {% endfor %}
@@ -86,7 +90,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 
 {% endblock %}
