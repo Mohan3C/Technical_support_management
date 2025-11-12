@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import login,logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from itertools import chain
 
@@ -10,7 +11,12 @@ from .form import *
 # Create your views here.
 
 def home(request):
+    if request.user.is_authenticated:
+        if request.user.role == "agent":
+            logout(request)
+
     return render(request,"user/main.html")
+
 
 def user_login(request):
     if request.method == "POST":
@@ -64,6 +70,7 @@ def user_logout(request):
         logout(request)
         return redirect('homepage')
     
+@login_required
 def user_dashboard(request):
     tickets = Ticket.objects.filter(created_by = request.user)
     comments = Comment.objects.filter(user = request.user)
@@ -91,6 +98,7 @@ def user_dashboard(request):
     }
     return render(request,"user/dashboard.html",context)
 
+@login_required
 def raise_ticket(request):
     form = TicketForm(request.POST or None,request.FILES or None)
     if request.method == "POST":
@@ -103,6 +111,7 @@ def raise_ticket(request):
     
     return render(request,"user/raised_ticket.html",{"form":form})
 
+@login_required
 def view_ticket(request,id):
     ticket  = Ticket.objects.get(id=id,created_by = request.user)
 
@@ -124,11 +133,13 @@ def view_ticket(request,id):
     }
     return render(request,"user/view_ticket.html",context)
 
+@login_required
 def show_tickets(request):
     tickets = Ticket.objects.filter(created_by = request.user).order_by("-created_at")
 
     return render(request,"user/all_ticket.html",{"tickets":tickets})
 
+@login_required
 def comment(request,id):
     if request.method == "POST":
         comment = request.POST.get('comment')
@@ -144,6 +155,7 @@ def comment(request,id):
     
     return redirect("view_ticket",id=id)
 
+@login_required
 def reopen_ticket(request,id):
     ticket = get_object_or_404(Ticket,id=id)
 
