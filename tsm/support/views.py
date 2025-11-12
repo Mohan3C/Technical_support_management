@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import login,logout
 from django.contrib.auth import authenticate
 from itertools import chain
@@ -23,7 +23,7 @@ def user_login(request):
             login(request,user)
 
             if user.role == "agent":
-                return redirect('agentdashboard')
+                return redirect('agent_dashboard')
             else:
                 return redirect('homepage')
         else:
@@ -53,7 +53,7 @@ def registration(request):
             login(request,user)
 
             if user.role =="agent":
-                return redirect('agentdashboard')
+                return redirect('agent_dashboard')
             else:
                 return redirect('homepage')
 
@@ -68,7 +68,7 @@ def user_dashboard(request):
     tickets = Ticket.objects.filter(created_by = request.user)
     comments = Comment.objects.filter(user = request.user)
 
-    key = lambda obj:getattr(obj,'created_at',getattr(obj,'update',None))
+    key = lambda obj:getattr(obj,'created_at',getattr(obj,'update_at',None))
 
     activities = sorted(chain(tickets,comments),key=key,reverse=True)
 
@@ -79,7 +79,7 @@ def user_dashboard(request):
     open_ticket_count = open_tickets.count()
     closed_ticket_count = tickets.filter(status="closed").count()
     total_ticket = tickets.count()
-    recent_tickets = tickets.order_by('-created_at','-update')[:10]
+    recent_tickets = tickets.order_by('-created_at','-update_at')[:10]
 
     context = {
         "activities":activities,
@@ -104,13 +104,23 @@ def raise_ticket(request):
     return render(request,"user/raised_ticket.html",{"form":form})
 
 def view_ticket(request,id):
-    ticket  = Ticket.objects.prefetch_related("comments").get(id=id,created_by = request.user)
+    ticket  = Ticket.objects.get(id=id,created_by = request.user)
 
     comments = ticket.comments.all().order_by("created_at")
+
+    status = ticket.status
+    progress = None
+    closed_ticket = None
+    if status == "progress":
+        progress = True
+    elif status == "closed":
+        closed_ticket = True
 
     context = {
         "ticket":ticket,
         "comments":comments,
+        "progress":progress,
+        "closed_ticket":closed_ticket
     }
     return render(request,"user/view_ticket.html",context)
 
@@ -130,9 +140,25 @@ def comment(request,id):
             obj.content = comment
             obj.save()
 
-            return redirect("view_ticket",id)
+            return redirect("view_ticket",id=ticket.id)
     
-    return redirect("view_ticket",id)
+    return redirect("view_ticket",id=id)
+
+def reopen_ticket(request,id):
+    ticket = get_object_or_404(Ticket,id=id)
+
+    new_ticket = Ticket()
+    new_ticket.created_by = request.user
+    new_ticket.title = ticket.title
+    new_ticket.description = ticket.description
+    new_ticket.problem_type = ticket.problem_type
+    new_ticket.priority = ticket.priority
+    new_ticket.save()
+
+    return redirect("user_dashboard")
+
+def profile(request):
+    return render(request,"registration/profile.html")
 
 
 

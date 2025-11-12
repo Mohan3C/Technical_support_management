@@ -29,6 +29,7 @@ urlpatterns = [
     path("registration/",registration,name="registration"),
     path("login/",user_login,name="login"),
     path("logout/",user_logout,name="logout"),
+    path("profile/",profile,name="profile"),
 
     # user urls 
     path("",home,name="homepage"),
@@ -37,11 +38,16 @@ urlpatterns = [
     path("all_Ticket/",show_tickets,name="all_tickets"),
     path("Ticket/view/<int:id>/",view_ticket,name="view_ticket"),
     path("Ticket/view/comment/<int:id>/",comment,name="comment"),
+    path("Ticket/reopen_ticket/<int:id>/",reopen_ticket,name="reopen_ticket"),
 
 
     # agent urls
     path("agent/dashboard",agent_dashboard,name="agent_dashboard"),
-    path("agent/ticket",agent_ticket,name="agent_ticket"),
+    path("agent/ticket",agent_tickets,name="agent_ticket"),
+    path("agent/ticket/take/<int:id>/",take_ticket,name="take_ticket"),
+    path("agent/ticket/comment/<int:id>/",agent_comment,name="agent_comment"),
+    path("agent/ticket/view/<int:id>/",agent_view_ticket,name="agent_view_ticket"),
+    path("agent/ticket/close/<int:id>/",close_ticket,name="close_ticket"),
     path("agent/progess_ticket",in_progress_ticket,name="agent_progress_ticket"),
     path("agent/closed_ticket",agent_closed_ticket,name="agent_closed_ticket"),
     path("agent/setting",agent_setting,name="agentsetting"),

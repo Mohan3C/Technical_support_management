@@ -2,6 +2,9 @@
 
 {% block content %}
 <div class="pt-5 bg-rose-200 h-screen">
+    <div class="bg-rose-200 py-2 mx-[8%] mb-5 flex justify-end items-center">
+        <a href="{% url 'raised_ticket' %}" class="px-4 py-2 bg-red-500 rounded ">Raise a ticket</a>
+    </div>
     <div class="flex flex-col bg-white mx-[8%] px-[2%] py-5 rounded-lg">
         <h2 class="pb-2 font-bold">Recent Tickets</h2>
         <hr>

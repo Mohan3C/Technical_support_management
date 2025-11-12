@@ -8,7 +8,7 @@ from django.conf import settings
 class Ticket(models.Model):
     statu_choice = (
         ('open','open'),
-        ('in_progess','in_progress'),
+        ('progress','progress'),
         ('solved','solved'),
         ('closed','closed')
     )
@@ -35,7 +35,7 @@ class Ticket(models.Model):
     status = models.CharField(max_length=20,choices=statu_choice,default="open")
     priority = models.CharField(max_length=20,choices=priority_choice,default="medium")
     created_at = models.DateTimeField(auto_now_add=True)
-    update = models.DateTimeField(auto_now=True)
+    update_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to="Image/",blank=True,null=True)
 
     def __str__(self):
@@ -47,6 +47,7 @@ class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,blank=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to="comment/image/",blank=True,null=True)
 
     def __str__(self):
         return f"comment by {self.user.username}"

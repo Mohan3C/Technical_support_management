@@ -1,5 +1,159 @@
 {% extends "agent/base.html" %}
 
 {% block content %}
+<div class="py-5 bg-rose-200 min-h-screen ">
+    <div class="bg-rose-200 py-2 mx-3 mb-3 flex justify-end items-center">
+        <a href="" class="px-4 py-2 bg-red-500 rounded ">ticket</a>
+    </div>
+    {% if open_tickets %}
+    <div class="flex flex-col bg-white mx-3 px-[2%] py-5 rounded-lg">
+        <h2 class="pb-2 font-bold">Open Tickets</h2>
+        <hr>
+        <div class="pt-3 flex flex-1 justify-center px-0">
+            <table class=" w-full">
+                <thead>
+                    <tr class="">
+                        <th class="py-2 border">Ticket ID</th>
+                        <th class="py-2 border">User</th>
+                        <th class="py-2 border">Type</th>
+                        <th class="py-2 border">Title</th>
+                        <th class="py-2 border">Priority</th>
+                        <th class="py-2 border">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for ticket in open_tickets %}
+                    <tr class="">
+                        <td class="px-2 py-2 border flex justify-center"><a href="{% url 'agent_view_ticket' ticket.id %}">{{ticket.id}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.created_by.username}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border"><a href="{% url 'agent_view_ticket' ticket.id %}">{{ticket.title}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.priority}}</td>
+                        <td class="border ">
+                            <div class="flex flex-row gap-3 mx-2 justify-center">
+                                <a href="{% url 'take_ticket' ticket.id %}" class="text-white font-semibold bg-blue-400 px-2 py-1">Take</a>
+                                <a href="{% url 'agent_view_ticket' ticket.id %}" class="text-white font-semibold bg-blue-400 px-2 py-1">View</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <h2>There is not open Ticket</h2>
+    {% endif %}
+
+    {% if priority_tickets %}
+    <div class="flex flex-col bg-white mx-3 px-[2%] mt-5 py-5 rounded-lg">
+        <h2 class="pb-2 font-bold">Open Tickets by Priority </h2>
+        <hr>
+        <div class="pt-3 flex flex-1 justify-center px-0">
+            <table class=" w-full">
+                <thead>
+                    <tr class="">
+                        <th class="py-2 border">Priority</th>
+                        <th class="py-2 border">User</th>
+                        <th class="py-2 border">Ticket ID</th>
+                        <th class="py-2 border">Type</th>
+                        <th class="py-2 border">Title</th>
+                        <th class="py-2 border">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for ticket in priority_tickets %}
+                    <tr class="">
+                        <td class="px-2 py-2 border uppercase flex justify-center">{{ticket.priority}}</td>
+                        <td class="px-2 py-2 border">{{ticket.created_by.username}}</a></td>
+                        <td class="px-2 py-2 border"><a href="{% url 'agent_view_ticket' ticket.id %}">{{ticket.id}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border"><a href="{% url 'agent_view_ticket' ticket.id %}">{{ticket.title}}</a></td>
+                        <td class="px-2 py-1 border flex justify-center"><a href="{% url 'agent_view_ticket' ticket.id %}" class="px-2 py-1 bg-green-400 mx-2">View</a></td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    {% if progress_tickets %}
+    <div class="flex flex-col bg-white mx-3 px-[2%] my-5 py-5 rounded-lg">
+        <h2 class="pb-2 font-bold">In Progress Tickets</h2>
+        <hr>
+        <div class="pt-3 flex flex-1 justify-center px-0">
+            <table class=" w-full">
+                <thead>
+                    <tr class="">
+                        <th class="py-2 border">Ticket ID</th>
+                        <th class="py-2 border">User</th>
+                        <th class="py-2 border">Type</th>
+                        <th class="py-2 border">Title</th>
+                        <th class="py-2 border">Description</th>
+                        <th class="py-2 border">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for ticket in progress_tickets %}
+                    <tr class="">
+                        <td class="px-2 py-2 border "><a href="{% url 'agent_view_ticket' ticket.id %}">{{ticket.id}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.created_by.username}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border"><a href="{% url 'agent_view_ticket' ticket.id %}">{{ticket.title}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.description}}</td>
+                        <td class="px-2 py-2 border "><a href="{% url 'agent_view_ticket' ticket.id %}" class="px-2 py-2 bg-green-400                    ">View</a></td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <h2>There is no In progress Ticket</h2>
+    {% endif %}
+
+    {% if closed_tickets %}
+    <div class="flex flex-col bg-white mx-3 px-[2%] my-5 py-5 rounded-lg">
+        <h2 class="pb-2 font-bold">Closed Tickets</h2>
+        <hr>
+        <div class="pt-3 flex flex-1 justify-center px-0">
+            <table class=" w-full">
+                <thead>
+                    <tr class="">
+                        <th class="py-2 border">Ticket ID</th>
+                        <th class="py-2 border">User</th>
+                        <th class="py-2 border">Type</th>
+                        <th class="py-2 border">Title</th>
+                        <th class="py-2 border">Description</th>
+                        <th class="py-2 border">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for ticket in closed_tickets %}
+                    <tr class="">
+                        <td class="px-2 py-2 border"><a href="{% url 'agent_view_ticket' ticket.id %}">{{ticket.id}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.created_by.username}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border"><a href="{% url 'agent_view_ticket' ticket.id %}">{{ticket.title}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.description}}</td>
+                        <td class="px-2 py-2 border flex justify-center"><a href="{% url 'agent_view_ticket' ticket.id %}" class="px-2 py-2 bg-green-400 mx-2 my-1">View</a></td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <h2>You haven`t closed any Ticket until</h2>
+    {% endif %}
+</div>
 
 {% endblock %}
