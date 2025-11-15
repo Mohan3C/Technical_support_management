@@ -7,7 +7,7 @@
 <div class="h-screen  px-[10%] bg-rose-200 py-5">
     <div class="bg-rose-200 -mx-[10%] py-2 flex justify-between items-center">
         <h2 class="font-bold text-3xl">Dashboard</h2>
-        <a href="{% url 'profile' %}" class="px-4 py-2 bg-red-500 rounded font-semibold text-white uppercase">{{request.user.username}}</a>
+        <a href="{% url 'profile' %}" class="px-4 py-2 bg-red-500 rounded font-semibold text-white uppercase">Profile</a>
     </div>
     <div class="pt-10 grid grid-cols-3 gap-10 flex justify-betwwen  ">
         <a href="{% url 'all_tickets' %}" class="self-start">

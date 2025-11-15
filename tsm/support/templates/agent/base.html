@@ -15,14 +15,12 @@
             <div class="w-2/12 ml-1  flex flex-col bg-rose-400 divide-y divide-gray-300 rounded pt-5">
                 <a href="{% url 'agent_dashboard' %}" class="py-2 px-[10%] font-semibold">Dashboard</a>
                 <a href="{% url 'agent_ticket' %}" class="py-2 px-[10%] font-semibold">Tickets</a>
-                <a href="{% url 'agent_progress_ticket' %}" class="py-2 px-[10%] font-semibold">In process Ticket</a>
-                <a href="{% url 'agent_closed_ticket' %}" class="py-2 px-[10%] font-semibold">Closed Ticket</a>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
                     <input type="submit" value="Logout" class="cursor-pointer py-2 px-[10%] font-semibold">
                 </form>
             </div>
-            <div class="w-10/12 bg-blue-900 mx-[3%]">
+            <div class="w-10/12 ml-2">
                 {% block content %}
                 {% endblock %}
             </div>
