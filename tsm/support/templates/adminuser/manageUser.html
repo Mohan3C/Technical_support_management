@@ -1,0 +1,40 @@
+{% extends "adminuser/base.html" %}
+
+{% block content %}
+
+<div class="flex flex-col bg-white mx-3 px-[2%] my-5 py-5 rounded-lg">
+    <h2 class="pb-2 font-bold">Customers</h2>
+    <hr>
+    <div class="pt-3 flex flex-1 justify-center px-0">
+        <table class=" w-full">
+            <thead>
+                <tr class="">
+                    <th class="py-2 border">Customer ID</th>
+                    <th class="py-2 border">Customer</th>
+                    <th class="py-2 border">Open Ticket</th>
+                    <th class="py-2 border">In Progress Ticket</th>
+                    <th class="py-2 border">Closed Ticket</th>
+                    <th class="py-2 border">Total Ticket</th>
+                    <th class="py-2 border">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr class="">
+                    <td class="px-2 py-2 border">{{customer.id}}</td>
+                    <td class="px-2 py-2 border">{{customer.username}}</td>
+                    <td class="px-2 py-2 border">{{customer.open_tickets_count}}</td>
+                    <td class="px-2 py-2 border">{{customer.progress_tickets_count}}</td>
+                    <td class="px-2 py-2 border">{{customer.closed_tickets_count}}</td>
+                    <td class="px-2 py-2 border">{{customer.total_tickets}}</td>
+                    <td class="px-2 py-2 border flex justify-center"><a href="{% url 'view_customer' customer.id %}"
+                            class="px-2 py-2 bg-green-400 mx-2 my-1">View</a></td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "adminuser/base.html" %}
+
+{% block content %}
+
+<div class="w-full mt-5">
+    <div class="grid grid-cols-3 gap-5  px-5 ">
+        <a href="{% url 'manage_customer' %}">
+            <div class="bg-indigo-400 px-5 py-3 rounded-lg">
+            <h2>Customers</h2>
+            <span>{{customer|length}}</span>
+        </div>
+        </a>
+       <a href="{% url 'admin_agent' %}">
+         <div class="bg-blue-400 px-5 py-3 rounded-lg">
+            <h2>Agents</h2>
+            <span>{{agent|length}}</span>
+        </div>
+       </a>
+        <a href="{% url 'admin_ticket' %}">
+            <div class="bg-teal-400 px-5 py-3 rounded-lg">
+            <h2>Tickets</h2>
+            <span>{{ticket|length}}</span>
+        </div>
+        </a>
+        <div class="bg-green-400 px-5 py-3 rounded-lg">
+            <h2>User</h2>
+        </div>
+        <div class="bg-slate-300 px-5 py-3 rounded-lg">
+            <h2>User</h2>
+        </div>
+    </div>
+</div>
+{% endblock %}

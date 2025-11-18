@@ -1,0 +1,38 @@
+{% extends "adminuser/base.html" %}
+
+{% block content %}
+
+<div class="flex flex-col bg-white mx-3 px-[2%] my-5 py-5 rounded-lg">
+    <h2 class="pb-2 font-bold">Agents</h2>
+    <hr>
+    <div class="pt-3 flex flex-1 justify-center px-0">
+        <table class=" w-full">
+            <thead>
+                <tr class="">
+                    <th class="py-2 border">Agent ID</th>
+                    <th class="py-2 border">Agent Username</th>
+                    <th class="py-2 border">In Progress Ticket</th>
+                    <th class="py-2 border">Closed Ticket</th>
+                    <th class="py-2 border">Total Ticket</th>
+                    <th class="py-2 border">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for agent in agents %}
+                <tr class="">
+                    <td class="px-2 py-2 border">{{agent.id}}</td>
+                    <td class="px-2 py-2 border">{{agent.username}}</td>
+                    <td class="px-2 py-2 border">{{agent.progress_tickets}}</td>
+                    <td class="px-2 py-2 border">{{agent.closed_tickets}}</td>
+                    <td class="px-2 py-2 border">{{agent.tickets}}</td>
+                    <td class="px-2 py-2 border flex justify-center"><a href="{% url 'view_agent' agent.id %}"
+                            class="px-2 py-2 bg-green-400 mx-2 my-1">View</a></td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -28,7 +28,9 @@ def user_login(request):
         if user is not None:
             login(request,user)
 
-            if user.role == "agent":
+            if user.role == "senior_agent":
+                return redirect("admin_dashboard")
+            elif user.role == "agent":
                 return redirect('agent_dashboard')
             else:
                 return redirect('homepage')

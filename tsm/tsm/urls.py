@@ -23,7 +23,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('superadmin/', admin.site.urls),
 
     # login urls 
     path("registration/",registration,name="registration"),
@@ -53,11 +53,16 @@ urlpatterns = [
     path("agent/setting",agent_setting,name="agentsetting"),
 
     # admin urls
-    path("admin/dashboard/",admin_dashboard,name="admindashboard"),
-    path("admin/manage_ticket/",manageticket,name="adminticket"),
-    path("admin/manage_agent/",manageAgent,name="adminagent"),
+    path("admin/dashboard/",admin_dashboard,name="admin_dashboard"),
+    path("admin/manage_user/",manageuser,name="manage_customer"),
+    path("admin/manage_agent/",manageAgent,name="admin_agent"),
+    path("admin/manage_ticket/",manageticket,name="admin_ticket"),
     path("admin/manage_report/",report,name="report"),
-    path("admin/manage_user/",manageuser,name="manageUser")
+    path("admin/customer/<int:user_id>/",view_user,name="view_customer"),
+    path("admin/agent/<int:agent_id>/",view_agent,name="view_agent"),
+    path("admin/ticket/<int:id>/",admin_view_ticket,name="admin_view_ticket"),
+    path("admin/ticket/<int:id>/assign_to/",assign_agent,name="assign_agent"),
+    path("admin/ticket/<int:id>/take/",admin_take,name="admin_take"),
 
 ]
 
