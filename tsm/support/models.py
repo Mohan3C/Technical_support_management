@@ -36,7 +36,6 @@ class Ticket(models.Model):
     priority = models.CharField(max_length=20,choices=priority_choice,default="medium")
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to="Image/",blank=True,null=True)
 
     def __str__(self):
         return self.title
@@ -47,7 +46,7 @@ class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,blank=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to="comment/image/",blank=True,null=True)
+    file = models.FileField(upload_to='comment_attachments/',blank=True,null=True)
 
     def __str__(self):
         return f"comment by {self.user.username}"
@@ -59,6 +58,15 @@ class User(AbstractUser):
         ('senior_agent','senior_agent')
     )
     role = models.CharField(max_length=20,choices=role_choice,default="customer")
+    name = models.CharField(max_length=200,null=True,blank=True)
+    phone_no = models.CharField(max_length=15, null=True, blank=True)
+    image = models.ImageField(upload_to="profile/",blank=True,null=True)
 
     def __str__(self):
         return f"{self.username} ({self.role})"
+    
+class TicketAttachment(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='attachments')
+    file = models.FileField(upload_to='ticket_attachments/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
