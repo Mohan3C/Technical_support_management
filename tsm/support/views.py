@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from itertools import chain
 
 # app imports
-from .models import User
+from .models import *
 from .form import *
 
 # Create your views here.
@@ -63,7 +63,7 @@ def registration(request):
             if user.role =="agent":
                 return redirect('agent_dashboard')
             else:
-                return redirect('homepage')
+                return redirect('user_dashboard')
 
     return render(request,"registration/register.html")
 
@@ -102,16 +102,32 @@ def user_dashboard(request):
 
 @login_required
 def raise_ticket(request):
-    form = TicketForm(request.POST or None,request.FILES or None)
     if request.method == "POST":
-        if form.is_valid():
-            ticket = form.save(commit=False)
-            ticket.created_by = request.user
-            ticket.save()
-            
-            return redirect('user_dashboard')
+        type =request.POST.get("type")
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+
+        ticket = Ticket()
+        ticket.problem_type = type
+        ticket.title = title
+        ticket.description = description
+        ticket.created_by = request.user
+
+        ticket.save()
+
+        if "attachment" in request.FILES:
+            attachments = request.FILES.getlist("attachment")
+            for attachment in attachments:
+                file = TicketAttachment()
+                file.file = attachment
+                file.ticket = ticket
+                file.uploaded_by = request.user
+
+                file.save()
+
+        return redirect('user_dashboard')
     
-    return render(request,"user/raised_ticket.html",{"form":form})
+    return render(request,"user/raised_ticket.html")
 
 @login_required
 def view_ticket(request,id):
