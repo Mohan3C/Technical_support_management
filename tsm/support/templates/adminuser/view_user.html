@@ -49,7 +49,7 @@
                         <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
                         <td class="px-2 py-2 border">
 
-                            <form action="{% url 'assign_agent' ticket.id %}" method="post" >
+                            <form action="{% url 'assign_agent' ticket.id %}" method="post" ">
                                 {% csrf_token %}
                                 <select name="userId" id="" onchange="this.form.submit()">
                                     <option value="" selected disabled>Choose agent</option>
@@ -60,9 +60,11 @@
                             </form>
                             
                         </td>
-                        <td class="px-2 py-2 border flex justify-center">
-                            <a href="{% url 'admin_view_ticket' ticket.id %}" class="px-2 py-2 bg-green-400 mx-2 my-1">View</a>
-                            <a href="{% url 'admin_take' ticket.id %}" class="px-2 py-2 bg-green-400 mx-2 my-1">Take</a>
+                        <td class="px-5 border ">
+                            <div class="w-full flex justify-between px-5">
+                                <a href="{% url 'admin_view_ticket' ticket.id %}" class="font-semibold text-green-400 ">View</a>
+                                <a href="{% url 'admin_take' ticket.id %}" class="font-semibold text-indigo-400  ">Take</a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
@@ -97,8 +99,8 @@
                         <td class="px-2 py-2 border">{{ticket.priority}}</td>
                         <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
                         <td class="px-2 py-2 border"><a href="{% url 'view_agent' ticket.assign_to.id %}">{{ticket.assign_to.username}}</a></td>
-                        <td class="px-2 py-2 border flex justify-center">
-                            <a href="{% url 'admin_view_ticket' ticket.id %}" class="px-2 py-2 bg-green-400 mx-2 my-1">View</a>
+                        <td class="px-2 py-2 border ">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}" class="font-semibold text-green-400">View</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -133,8 +135,8 @@
                         <td class="px-2 py-2 border">{{ticket.priority}}</td>
                         <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
                         <td class="px-2 py-2 border">{% if ticket.assign_to %}<a href="{% url 'view_agent' ticket.assign_to.id %}">{{ticket.assign_to.username}}</a>{% else %} Not assigned {% endif %}</td>
-                        <td class="px-2 py-2 border flex justify-center">
-                            <a href="{% url 'admin_view_ticket' ticket.id %}" class="px-2 py-2 bg-green-400 mx-2 my-1">View</a>
+                        <td class="px-2 py-2 border ">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}" class="font-semibold text-green-400">View</a>
                             
                             </td>
                     </tr>

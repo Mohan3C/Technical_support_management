@@ -49,7 +49,6 @@ urlpatterns = [
     path("agent/ticket/view/<int:id>/",agent_view_ticket,name="agent_view_ticket"),
     path("agent/ticket/close/<int:id>/",close_ticket,name="close_ticket"),
     path("agent/progess_ticket",in_progress_ticket,name="agent_progress_ticket"),
-    path("agent/closed_ticket",agent_closed_ticket,name="agent_closed_ticket"),
     path("agent/setting",agent_setting,name="agentsetting"),
 
     # admin urls

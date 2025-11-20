@@ -14,6 +14,7 @@
                     <th class="py-2 border">In Progress Ticket</th>
                     <th class="py-2 border">Closed Ticket</th>
                     <th class="py-2 border">Total Ticket</th>
+                    <th class="py-2 border">Status</th>
                     <th class="py-2 border">Action</th>
                 </tr>
             </thead>
@@ -25,6 +26,7 @@
                     <td class="px-2 py-2 border">{{agent.progress_tickets}}</td>
                     <td class="px-2 py-2 border">{{agent.closed_tickets}}</td>
                     <td class="px-2 py-2 border">{{agent.tickets}}</td>
+                    <td class="px-2 py-2 border font-semibold {% if agent.active %}text-green-500 {% else %}text-red-500 {% endif %}">{% if agent.active %}Active{% else %}Deactive{% endif %}</td>
                     <td class="px-2 py-2 border flex justify-center"><a href="{% url 'view_agent' agent.id %}"
                             class="px-2 py-2 bg-green-400 mx-2 my-1">View</a></td>
                 </tr>

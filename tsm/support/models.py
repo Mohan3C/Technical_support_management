@@ -70,3 +70,6 @@ class TicketAttachment(models.Model):
     file = models.FileField(upload_to='ticket_attachments/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.uploaded_by.username

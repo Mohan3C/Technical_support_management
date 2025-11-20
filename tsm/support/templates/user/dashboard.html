@@ -4,87 +4,101 @@
 
 {% block content %}
 
-<div class="h-screen  px-[10%] bg-rose-200 py-5">
-    <div class="bg-rose-200 -mx-[10%] py-2 flex justify-between items-center">
+<div class="min-h-screen  px-[8%] bg-rose-200 py-5">
+    <div class="bg-rose-200 -mx-[8%] py-2 flex justify-between items-center">
         <h2 class="font-bold text-3xl">Dashboard</h2>
-        <a href="{% url 'profile' %}" class="px-4 py-2 bg-red-500 rounded font-semibold text-white uppercase">Profile</a>
+        <a href="{% url 'profile' %}"
+            class="px-4 py-2 bg-red-500 rounded font-semibold text-white uppercase">Profile</a>
     </div>
-    <div class="pt-10 grid grid-cols-3 gap-10 flex justify-betwwen  ">
-        <a href="{% url 'all_tickets' %}" class="self-start">
-            <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg ">
-                <h2 class="font-bold text-2xl">My Tickets</h2>
-                <span class="px-1 text-red-500 font-semibold">{{total_ticket}}</span>
-                <div class="flex flex-1 justify-between items-between pt-5">
-                    <h2>Open Tickets : {{open_ticket}} </h2>
-                    <h2>Closed Tickets : {{closed_ticket}}</h2>
+    <div class="w-full flex flex-1 gap-5">
+        <div class="w-8/12">
+            <div class="pt-10 grid grid-cols-2 gap-10 flex justify-betwwen  ">
+                <a href="{% url 'all_tickets' %}" class="self-start">
+                    <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg ">
+                        <h2 class="font-bold text-2xl">My Tickets</h2>
+                        <span class="px-1 text-red-500 font-semibold">{{total_ticket}}</span>
+                        <div class="flex flex-1 justify-between items-between pt-5">
+                            <h2>Open Tickets : {{open_ticket}} </h2>
+                            <h2>Closed Tickets : {{closed_ticket}}</h2>
+                        </div>
+                    </div>
+                </a>
+                <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg">
+                    <h2 class="pb-2 font-bold">Open Tickets</h2>
+                    <hr>
+                    <div class="pt-3 flex flex-1 justify-center px-0">
+                        {% if open_tickets %}
+                        <table class=" w-full">
+                            <thead>
+                                <tr class="">
+                                    <th class=" border">ID</th>
+                                    <th class=" border">Title</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ticket in open_tickets %}
+                                <tr class="">
+                                    <td class="px-2 border"># <a
+                                            href="{% url 'view_ticket' ticket.id %}">{{ticket.id}}</a>
+                                    </td>
+                                    <td class="px-2 border truncate ">{{ticket.title|truncatewords:3}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <h2 class="font-semibold text-xl text-slate-400">There is no Open Ticket.</h2>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg self-start">
+                    <h2 class="pb-2 font-bold">Recent Tickets</h2>
+                    <hr>
+                    <div class="pt-3 flex flex-1 justify-center px-0">
+                        <table class=" w-full">
+                            <thead>
+                                <tr class="">
+                                    <th class=" border">ID</th>
+                                    <th class=" border">Title</th>
+                                    <th class=" border">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if recent_tickets %}
+                                {% for ticket in recent_tickets %}
+                                <tr class="">
+                                    <td class="px-2 border"><a
+                                            href="{% url 'view_ticket' ticket.id %}">#{{ticket.id}}</a>
+                                    </td>
+                                    <td class="px-2 border truncate ">{{ticket.title|truncatewords:3}}</td>
+                                    <td class="px-2 border">{{ticket.status}}</td>
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </a>
-        <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg self-start">
-            <h2 class="pb-2 font-bold">Recent Tickets</h2>
-            <hr>
-            <div class="pt-3 flex flex-1 justify-center px-0">
-                <table class=" w-full">
-                    <thead>
-                        <tr class="">
-                            <th class=" border">ID</th>
-                            <th class=" border">Title</th>
-                            <th class=" border">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if recent_tickets %}
-                        {% for ticket in recent_tickets %}
-                        <tr class="">
-                            <td class="px-2 border"><a href="{% url 'view_ticket' ticket.id %}">#{{ticket.id}}</a></td>
-                            <td class="px-2 border truncate ">{{ticket.title|truncatewords:3}}</td>
-                            <td class="px-2 border">{{ticket.status}}</td>
-                        </tr>
-                        {% endfor %}
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
         </div>
-        <div class="flex flex-col bg-white shadow-lg p-5 rounded-lg">
-            <h2 class="pb-3 font-bold"> Recent activity</h2>
-            <hr class="">
-            <div class="pt-2">
-                {% if activities %}
-                {% for recent in activities %}
-                {% if recent.model == 'Ticket' %}
-                <p class="text-sm">Ticket: #{{recent.id}} "{{recent.title|truncatewords:3}}"<span class="text-green-400 pl-2 ">{{recent.update_at|naturaltime}}</span></p>
-                {% else %}
-                <p class="text-sm">Comment: Ticket-{{recent.ticket.id}} "{{recent.content|truncatewords:3}}"<span class="text-sm text-green-400 pl-2">{{recent.created_at|naturaltime}}</span> </p>
-                {% endif %}
-                {% endfor %}
-                {% endif %}
+        <div class="w-4/12 ">
+            <div class="flex flex-col bg-white shadow-lg p-5 mt-10 rounded-lg">
+                <h2 class="pb-3 font-bold"> Recent activity</h2>
+                <hr class="">
+                <div class="pt-2">
+                    {% if activities %}
+                    {% for recent in activities %}
+                    {% if recent.model == 'Ticket' %}
+                    <p class="text-sm">Ticket: #{{recent.id}} "{{recent.title|truncatewords:3}}"<span
+                            class="text-green-400 pl-2 ">{{recent.update_at|naturaltime}}</span></p>
+                    {% else %}
+                    <p class="text-sm">Comment: Ticket-{{recent.ticket.id}} "{{recent.content|truncatewords:3}}"<span
+                            class="text-sm text-green-400 pl-2">{{recent.created_at|naturaltime}}</span> </p>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
 
-            </div>
-        </div>
-        
-        <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg">
-            <h2 class="pb-2 font-bold">Open Tickets</h2>
-            <hr>
-            <div class="pt-3 flex flex-1 justify-center px-0">
-                <table class=" w-full">
-                    <thead>
-                        <tr class="">
-                            <th class=" border">ID</th>
-                            <th class=" border">Title</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if open_tickets %}
-                        {% for ticket in recent_tickets %}
-                        <tr class="">
-                            <td class="px-2 border"># <a href="{% url 'view_ticket' ticket.id %}">{{ticket.id}}</a></td>
-                            <td class="px-2 border truncate ">{{ticket.title|truncatewords:3}}</td>
-                        </tr>
-                        {% endfor %}
-                        {% endif %}
-                    </tbody>
-                </table>
+                </div>
             </div>
         </div>
     </div>

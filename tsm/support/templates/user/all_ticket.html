@@ -1,14 +1,15 @@
 {% extends "user/base.html" %}
 
 {% block content %}
-<div class="pt-5 bg-rose-200 h-screen">
+<div class="py-5 bg-rose-200 min-h-screen">
     <div class="bg-rose-200 py-2 mx-[8%] mb-5 flex justify-end items-center">
         <a href="{% url 'raised_ticket' %}" class="px-4 py-2 bg-red-500 rounded ">Raise a ticket</a>
     </div>
     <div class="flex flex-col bg-white mx-[8%] px-[2%] py-5 rounded-lg">
-        <h2 class="pb-2 font-bold">Recent Tickets</h2>
+        <h2 class="pb-2 font-bold">Open Tickets</h2>
         <hr>
-        <div class="pt-3 flex flex-1 justify-center px-0">
+        <div class="pt-3 flex flex-1 justify-center px-0 ">
+            {% if open_tickets %}
             <table class=" w-full">
                 <thead>
                     <tr class="">
@@ -17,22 +18,97 @@
                         <th class="py-2 border">Title</th>
                         <th class="py-2 border">Description</th>
                         <th class="py-2 border">Status</th>
+                        <th class="py-2 border px-2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% if tickets %}
-                    {% for ticket in tickets %}
+                    {% for ticket in open_tickets %}
                     <tr class="">
                         <td class="px-2 py-2 border"><a href="{% url 'view_ticket' ticket.id %}">{{ticket.id}}</a></td>
                         <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
-                        <td class="px-2 py-2 border"><a href="{% url 'view_ticket' ticket.id %}">{{ticket.title}}</a></td>
-                        <td class="px-2 py-2 border">{{ticket.description}}</td>
+                        <td class="px-2 py-2 border"><a href="{% url 'view_ticket' ticket.id %}" title="{{ticket.title}}">{{ticket.title|truncatewords:15}}</a></td>
+                        <td class="px-2 py-2 border" title="{{ticket.description}}">{{ticket.description|truncatewords:50}}</td>
                         <td class="px-2 py-2 border">{{ticket.status}}</td>
+                        <td class="px-2 py-2 border font-semibold text-green-400"><a href="{% url 'view_ticket' ticket.id %}">view</a></td>
                     </tr>
                     {% endfor %}
-                    {% endif %}
                 </tbody>
             </table>
+            {% else %}
+            <h2 class="font-xl font-semibold text-slate-400">There is no Open Tickts.</h2>
+            {% endif %}
+        </div>
+    </div>
+    <div class="flex flex-col bg-white mx-[8%] mt-5 px-[2%] py-5 rounded-lg">
+        <h2 class="pb-2 font-bold">Progress Tickets</h2>
+        <hr>
+        <div class="pt-3 flex flex-1 justify-center px-0 ">
+            {% if progress_tickets %}
+            <table class=" w-full">
+                <thead>
+                    <tr class="">
+                        <th class="py-2 border">ID</th>
+                        <th class="py-2 border">Type</th>
+                        <th class="py-2 border">Title</th>
+                        <th class="py-2 border">Description</th>
+                        <th class="py-2 border">Status</th>
+                        <th class="py-2 border whitespace-nowrap px-2">Assigned To</th>
+                        <th class="py-2 border px-2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in progress_tickets %}
+                    <tr class="">
+                        <td class="px-2 py-2 border"><a href="{% url 'view_ticket' ticket.id %}">{{ticket.id}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border"><a href="{% url 'view_ticket' ticket.id %}" title="{{ticket.title}}">{{ticket.title|truncatewords:15}}</a></td>
+                        <td class="px-2 py-2 border" title="{{ticket.description}}">{{ticket.description|truncatewords:50}}</td>
+                        <td class="px-2 py-2 border">{{ticket.status}}</td>
+                        <td class="px-2 py-2 border ">{{ticket.assign_to.username}}</td>
+                        <td class="px-2 py-2 border font-semibold text-green-400"><a href="{% url 'view_ticket' ticket.id %}">view</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+             {% else %}
+            <h2 class="font-xl font-semibold text-slate-400">There is no Open Tickts.</h2>
+            {% endif %}
+        </div>
+    </div>
+    <div class="flex flex-col bg-white mx-[8%] mt-5 px-[2%] py-5 rounded-lg">
+        <h2 class="pb-2 font-bold">Closed Tickets</h2>
+        <hr>
+        <div class="pt-3 flex flex-1 justify-center px-0 ">
+            {% if closed_tickets %}
+            <table class=" w-full">
+                <thead>
+                    <tr class="">
+                        <th class="py-2 border">ID</th>
+                        <th class="py-2 border">Type</th>
+                        <th class="py-2 border">Title</th>
+                        <th class="py-2 border">Description</th>
+                        <th class="py-2 border">Status</th>
+                        <th class="py-2 border whitespace-nowrap px-2">Assigned To</th>
+                        <th class="py-2 border px-2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in closed_tickets %}
+                    <tr class="">
+                        <td class="px-2 py-2 border"><a href="{% url 'view_ticket' ticket.id %}">{{ticket.id}}</a></td>
+                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border"><a href="{% url 'view_ticket' ticket.id %}" title="{{ticket.title}}">{{ticket.title|truncatewords:15}}</a></td>
+                        <td class="px-2 py-2 border" title="{{ticket.description}}">{{ticket.description|truncatewords:50}}</td>
+                        <td class="px-2 py-2 border">{{ticket.status}}</td>
+                        <td class="px-2 py-2 border ">{{ticket.assign_to.username}}</td>
+                        <td class="px-2 py-2 border font-semibold text-green-400"><a href="{% url 'view_ticket' ticket.id %}">view</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+             {% else %}
+            <h2 class="font-xl font-semibold text-slate-400">There is no Open Tickts.</h2>
+            {% endif %}
         </div>
     </div>
 </div>

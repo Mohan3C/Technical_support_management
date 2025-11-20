@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
@@ -7,16 +7,16 @@ from itertools import chain
 # app imports
 from .models import *
 from .form import *
+from .decorators import permission_check
 
 # Create your views here.
 
 def home(request):
     if request.user.is_authenticated:
-        if request.user.role == "agent":
-            logout(request)
+        logout(request)
 
     return render(request,"user/main.html")
-
+        
 
 def user_login(request):
     if request.method == "POST":
@@ -33,7 +33,7 @@ def user_login(request):
             elif user.role == "agent":
                 return redirect('agent_dashboard')
             else:
-                return redirect('homepage')
+                return redirect('user_dashboard')
         else:
             return render(request,"registration/login.html",{'error': "Invalid username or password"})
 
@@ -67,12 +67,14 @@ def registration(request):
 
     return render(request,"registration/register.html")
 
+@login_required
 def user_logout(request):
     if request.method == "POST":
         logout(request)
         return redirect('homepage')
     
 @login_required
+@permission_check(role="customer")
 def user_dashboard(request):
     tickets = Ticket.objects.filter(created_by = request.user)
     comments = Comment.objects.filter(user = request.user)
@@ -101,37 +103,42 @@ def user_dashboard(request):
     return render(request,"user/dashboard.html",context)
 
 @login_required
+@permission_check(role="customer")
 def raise_ticket(request):
     if request.method == "POST":
         type =request.POST.get("type")
         title = request.POST.get("title")
         description = request.POST.get("description")
 
-        ticket = Ticket()
-        ticket.problem_type = type
-        ticket.title = title
-        ticket.description = description
-        ticket.created_by = request.user
+        if type and title and description:
 
-        ticket.save()
+            ticket = Ticket()
+            ticket.problem_type = type
+            ticket.title = title
+            ticket.description = description
+            ticket.created_by = request.user
 
-        if "attachment" in request.FILES:
-            attachments = request.FILES.getlist("attachment")
-            for attachment in attachments:
-                file = TicketAttachment()
-                file.file = attachment
-                file.ticket = ticket
-                file.uploaded_by = request.user
+            ticket.save()
 
-                file.save()
+            if "attachment" in request.FILES:
+                attachments = request.FILES.getlist("attachment")
+                for attachment in attachments:
+                    file = TicketAttachment()
+                    file.file = attachment
+                    file.ticket = ticket
+                    file.uploaded_by = request.user
 
-        return redirect('user_dashboard')
+                    file.save()
+
+            return redirect('user_dashboard')
     
     return render(request,"user/raised_ticket.html")
 
 @login_required
+@permission_check(role="customer")
 def view_ticket(request,id):
     ticket  = Ticket.objects.get(id=id,created_by = request.user)
+    attachments = TicketAttachment.objects.filter(ticket= ticket)
 
     comments = ticket.comments.all().order_by("created_at")
 
@@ -147,17 +154,29 @@ def view_ticket(request,id):
         "ticket":ticket,
         "comments":comments,
         "progress":progress,
-        "closed_ticket":closed_ticket
+        "closed_ticket":closed_ticket,
+        "attachments":attachments,
     }
     return render(request,"user/view_ticket.html",context)
 
 @login_required
+@permission_check(role="customer")
 def show_tickets(request):
-    tickets = Ticket.objects.filter(created_by = request.user).order_by("-created_at")
+    tickets = Ticket.objects.filter(created_by = request.user)
+    open_tickets = tickets.filter(status="open").order_by("-created_at")
+    progress_tickets = tickets.filter(status = "progress").order_by("-update_at")
+    closed_tickets = tickets.filter(status="closed").order_by("-update_at")
 
-    return render(request,"user/all_ticket.html",{"tickets":tickets})
+    context = {
+        "open_tickets":open_tickets,
+        "progress_tickets":progress_tickets,
+        "closed_tickets":closed_tickets,
+    }
+
+    return render(request,"user/all_ticket.html",context)
 
 @login_required
+@permission_check(role="customer")
 def comment(request,id):
     if request.method == "POST":
         comment = request.POST.get('comment')
@@ -167,6 +186,11 @@ def comment(request,id):
             obj.ticket = ticket
             obj.user = request.user
             obj.content = comment
+
+            if "file" in request.FILES:
+                attachment = request.FILES.getlist("file")
+                obj.file = attachment
+                
             obj.save()
 
             return redirect("view_ticket",id=ticket.id)
@@ -174,6 +198,7 @@ def comment(request,id):
     return redirect("view_ticket",id=id)
 
 @login_required
+@permission_check(role="customer")
 def reopen_ticket(request,id):
     ticket = get_object_or_404(Ticket,id=id)
 

@@ -1,7 +1,13 @@
 from django.db import models
 from django.shortcuts import render, redirect,get_object_or_404
-from .models import User,Ticket,Comment
+from django.contrib.auth.decorators import login_required
 
+from .models import User,Ticket,Comment
+from .decorators import permission_check
+
+
+@login_required
+@permission_check(role="admin")
 def admin_dashboard(request):
     customer = User.objects.filter(role="customer")
     agent = User.objects.filter(role="agent")
@@ -22,6 +28,8 @@ def admin_dashboard(request):
 
     return render(request,"adminuser/dashboard.html",context)
 
+@login_required
+@permission_check(role="admin")
 def manageticket(request):
     tickets = Ticket.objects.all()
     open_tickets = tickets.filter(status="open").order_by("created_at")
@@ -39,6 +47,8 @@ def manageticket(request):
 
     return render(request,"adminuser/manageticket.html",context)
 
+@login_required
+@permission_check(role="admin")
 def manageuser(request):
     customers = User.objects.filter(role="customer")
     
@@ -55,6 +65,8 @@ def manageuser(request):
 
     return render(request,"adminuser/manageUser.html",context)
 
+@login_required
+@permission_check(role="admin")
 def view_user(request,user_id):
     customer = User.objects.get(id=user_id)
     agents = User.objects.filter(role="agent")
@@ -74,6 +86,8 @@ def view_user(request,user_id):
 
     return render(request,"adminuser/view_user.html",context)
 
+@login_required
+@permission_check(role="admin")
 def admin_view_ticket(request,id):
     ticket = Ticket.objects.get(id=id)
 
@@ -81,9 +95,13 @@ def admin_view_ticket(request,id):
 
     return render(request,"adminuser/view_ticket.html",{"ticket":ticket,"comments":comments})
 
+@login_required
+@permission_check(role="admin")
 def report(request):
     return render(request,"adminuser/report.html")
 
+@login_required
+@permission_check(role="admin")
 def manageAgent(request):
     agents = User.objects.filter(role="agent")
 
@@ -94,8 +112,14 @@ def manageAgent(request):
         agent.progress_tickets = tickets.filter(status="progress").count()
         agent.closed_tickets = tickets.filter(status="closed").count()
 
+        agent.active = True
+        if not agent.is_active:
+            agent.active = False
+
     return render(request,"adminuser/manageAgent.html",{"agents":agents})
 
+@login_required
+@permission_check(role="admin")
 def view_agent(request,agent_id):
     agent = User.objects.get(id=agent_id)
 
@@ -113,6 +137,8 @@ def view_agent(request,agent_id):
 
     return render(request,"adminuser/view_agent.html",context)
 
+@login_required
+@permission_check(role="admin")
 def assign_agent(request,id):
     ticket = Ticket.objects.get(id=id)
 
@@ -131,7 +157,8 @@ def assign_agent(request,id):
    
     return render(request,"adminuser/assign.html")
 
-
+@login_required
+@permission_check(role="admin")
 def admin_take(request,id):
     ticket = Ticket.objects.get(id=id)
 

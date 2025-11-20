@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    {% load static %}
+    <div class="w-full h-screen flex justify-center items-center m-auto">
+        <div class="border bg-rose-600 ">
+            <div class="px-[10%] py-2 flex flex-col w-full bg-indigo-400">
+                <div class=" flex justify-center items-center flex-col bg-green-400">
+                    <img src="{% static 'profile.png' %}" alt="Image"
+                        class="h-[100px] w-[100px] bg-slate-300 ">
+                    <h2 class=" py-1 bottom-0 flex justify-center w-full px-2 bg-red-500">Staff</h2>
+                </div>
+                <div class=" px-10 py-2 ">
+                    <div class="flex justify-between">
+
+                        <label for="username" class="py-2 whitespace-nowrap">Username</label>
+                        <h2 class="px-5 py-2whitespace-nowrap " id="username">Mohan</h2>
+                    </div>
+                    <div class="flex flex-1 justify-between">
+
+                        <label for="name" class="py-2 whitespace-nowrap">Name</label>
+                        <h2 class="px-5 py-2 mb-2 whitespace-nowrap">Mohan Sharma</h2>
+                    </div>
+                    <div class="flex justify-between">
+
+                        <label for="" class="py-2 whitespace-nowrap ">Email</label>
+                        <h2 class="px-5 py-2 mb-2 whitespace-nowrap">mohan@gmail.com</h2>
+                    </div>
+                    <div class="flex flex-1 justify-between">
+
+                        <label for="" class="py-2 whitespace-nowrap">Contact No</label>
+                        <h2 class="px-5 py-2 mb-2 whitespace-nowrap">9877884774</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
