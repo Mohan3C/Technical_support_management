@@ -7,9 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class=" bg-rose-500 px-[10%] flex justify-between items-center py-4">
-        <div class="font-bold text-3xl">
-            <a href="{% url 'user_dashboard' %}">TSM</a>
+    <div class=" px-[10%] flex justify-between items-center border py-4">
+        <div class="font-bold text-xl flex flex-row items-center">
+            <a href="{% url 'user_dashboard' %}" class="bg-indigo-600 text-white px-2 py-1 rounded">TSM</a>
+            <p class="px-2 text-normal">TeachSupport</p>
+
         </div>
         <div class="flex justify-between w-80 font-semibold">
             <a href="{% url 'user_dashboard' %}" class="px-5">Home</a>
@@ -18,15 +20,15 @@
         </div>
         <div class=" px-3 flex flex-row gap-5 font-semibold">
             {% if request.user.is_authenticated %}
-            <h2 class="font-semibold uppercase">{{request.user.username}}</h2>
+            <h2 class="uppercase px-3 py-1 bg-indigo-600 text-white rounded">{{request.user.username}}</h2>
             <form action="{% url 'logout' %}" method="post" >
                 {% csrf_token %}
 
-                <input type="submit" value="Logout" class="cursor-pointer">
+                <input type="submit" value="Logout" class="cursor-pointer px-3 py-1 bg-indigo-600 text-white rounded ">
             </form>
             {% else %}
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'registration' %}">Register</a>
+            <a href="{% url 'login' %}" class="">Login</a>
+            <a href="{% url 'registration' %}" class="text-white px-2 py-1 bg-indigo-600 rounded">SignUp</a>
             {% endif %}
 
         </div>

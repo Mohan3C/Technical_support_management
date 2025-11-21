@@ -95,6 +95,51 @@ def admin_view_ticket(request,id):
 
     return render(request,"adminuser/view_ticket.html",{"ticket":ticket,"comments":comments})
 
+
+def admin_comment(request,id):
+    ticket = Ticket.objects.filter(id=id)
+
+    if request.method == "POST":
+        comment = request.POST.get("comment")
+        attachment = request.POST.get("file")
+
+        if comment and attachment:
+            comment = Comment()
+            comment.content = comment
+            comment.file = attachment
+            comment.ticket = ticket
+            comment.user = request.user
+
+            comment.save()
+            return redirect("admin_view_ticket",id=ticket.id)
+        elif comment and not attachment:
+            comment = Comment()
+            comment.content = comment
+            comment.ticket = ticket
+            comment.user = request.user
+
+            comment.save()
+            return redirect("admin_view_ticket",id=ticket.id)
+        
+        elif not comment and attachment:
+            comment = Comment()
+            comment.file = attachment
+            comment.ticket = ticket
+            comment.user = request.user
+
+            comment.save()
+            return redirect("admin_view_ticket",id=ticket.id)
+        
+    return redirect("admin_view_ticket",id=ticket.id)
+
+
+def admin_close_ticket(request,id):
+    ticket = Ticket.objects.get(id=id)
+    ticket.status = "closed"
+    ticket.save()
+
+    return redirect("admin_view_ticket",id)
+
 @login_required
 @permission_check(role="senior_agent")
 def report(request):

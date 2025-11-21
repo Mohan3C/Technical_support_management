@@ -60,6 +60,8 @@ urlpatterns = [
     path("admin/customer/<int:user_id>/",view_user,name="view_customer"),
     path("admin/agent/<int:agent_id>/",view_agent,name="view_agent"),
     path("admin/ticket/<int:id>/",admin_view_ticket,name="admin_view_ticket"),
+    path("admin/ticket/<int:id>/comment/",admin_comment,name="admin_comment"),
+    path("admin/ticket/<int:id>/close/",admin_close_ticket,name="admin_close_ticket"),
     path("admin/ticket/<int:id>/assign_to/",assign_agent,name="assign_agent"),
     path("admin/ticket/<int:id>/take/",admin_take,name="admin_take"),
 

@@ -7,7 +7,7 @@
 <div class="fl fle w-full bg-white ">
 
     <div class="w-full flex flex-1 ">
-        <div class="w-5/12  border-x border-gray-600  bg-[#F3F4F6] ">
+        <div class="w-5/12  border-x border-gray-600  ">
             <div class="flex flex-col">
                 <div class="px-[7%] py-3 flex flex-1 bg-[#735DA5]">
                     <div class="flex flex-1">
@@ -30,22 +30,19 @@
                         <h2 class="px-2 font-bold bg-slate-400 text-white">{{ticket.problem_type}}</h2>
                     </div>
                 </div>
-                <div class=" bg-[#F3F4F6]">
+                <div class=" ">
                     <div class="flex flex-col">
-                        <div class="mb-2 px-[10%] pt-3 flex flex-1 justify-between bg-[#F3F4F6]">
+                        <div class="mb-2 px-[10%] pt-3 flex flex-1 justify-between ">
                             <h3 class=" pr-5 font-bold">Subject</h3>
                         </div>
                         <div class="px-[10%] pb-1 flex flex-1 ">
-                            <h2 class="py-2 px-2 flex flex-1 bg-white border rounded whitespace-pre-line">
-                                {{ticket.title}}</h2>
+                            <h2 class="py-2 px-2 flex flex-1 shadow border rounded whitespace-pre-line">{{ticket.title}}</h2>
                         </div>
                         <div class="px-[10%] pt-3 flex flex-1 justify-between">
                             <h3 class="pr-5 font-bold">Description</h3>
                         </div>
-                        <div class="px-[10%] pb-1 flex flex-1 ">
-                            <h2
-                                class=" flex flex-1 bg-white px-2  pt-1 border rounded h-[245px] top-0 overflow-y-auto whitespace-pre-line">
-                                {{ticket.description}}</h2>
+                        <div class="px-[10%] pb-1 flex flex-1 my-1 ">
+                            <p class=" flex flex-1 shadow px-2  pt-1 border rounded h-[245px] top-0 overflow-y-auto whitespace-pre-line">{{ticket.description}}</p>
                         </div>
 
                         {% if ticket.image %}
@@ -59,22 +56,22 @@
                         {% endif %}
                         <div class="px-[10%] mb-1 flex flex-1 justify-between">
                             <h3 class="  text-sm pr-5 font-bold">created at </h3>
-                            <h3 class="px-5 py-2 text-sm pr-5 bg-[#EDE9FE] font-bold">{{ticket.created_at}} </h3>
+                            <h3 class="px-5 py-2 text-sm shadow pr-5 bg-[#EDE9FE] font-bold">{{ticket.created_at}} </h3>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="w-7/12 h-[740px] overflow-y-scroll bg-[#F3F4F6]">
+        <div class="w-7/12 h-[740px] overflow-y-scroll ">
             <div class="px-[4%] py-3 flex flex-1 bg-[#735DA5] top-0 sticky justify-between">
                 <div class="flex flex-1">
                     <h2 class="font-bold text-xl text-white">Chat with {{ticket.created_by.username}}</h2>
                 </div>
                 {% if ticket.status == "progress" %}
-                <a href="{% url 'close_ticket' ticket.id %}" class="font-semibold text-xl px-5 bg-red-500"> close</a>
+                <a href="{% url 'close_ticket' ticket.id %}" class="font-semibold text-xl text-white px-5 bg-red-500"> close</a>
                 {% endif %}
             </div>
-            <div class="w-full min-h-screen bg-[#F3F4F6]">
+            <div class="w-full min-h-screen ">
                 <div class="flex flex-col">
                     {% if comments %}
 
@@ -89,7 +86,7 @@
                                     class="text-blue-400 hover:underline">{{comment.file.name|basename}}</a>
                                 {% endif %}
                                 {% if comment.content %}
-                                <p class="px-5 py-1 mt-2 bg-white rounded whitespace-pre-line">{{ comment.content }}</p>
+                                <p class="px-5 py-1 mt-2 bg-sky-100 rounded whitespace-pre-line">{{ comment.content }}</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -104,7 +101,7 @@
                                     class="text-blue-400 hover:underline py-2">{{comment.file.name|basename}}</a>
                                 {% endif %}
                                 {% if comment.content %}
-                                <p class="px-5 py-1 bg-white rounded whitespace-pre-line ">{{comment.content}}</p>
+                                <p class="px-5 py-1 bg-sky-100 rounded whitespace-pre-line ">{{comment.content}}</p>
                                 {% endif %}
                                 <span class="flex  pt-1 text-sm text-gray-600  justify-end">{{comment.created_at|date:"d F Y"}}</span>
                             </div>
@@ -132,7 +129,7 @@
                             <div class="flex flex-1">
                                 <div class="flex flex-1 border border-gray-200 rounded-lg bg-white items-center">
                                     <div class=" ml-3 px-3 bg-slate-100 rounded-full">
-                                        <label for="file" class="text-xl">+</label>
+                                        <label for="file" class="text-xl font-semibold">+</label>
                                         <input type="file" name="file" id="file" class="hidden"
                                             onchange="preview(this)">
                                     </div>
