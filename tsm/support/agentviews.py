@@ -22,10 +22,7 @@ def agent_dashboard(request):
     progress_tickets = tickets.filter(status="progress")
     closed_tickets = tickets.filter(status="closed")
     recent_tickets = tickets.order_by("-update_at")[:10]
-
-    print(f"activities: {activities}")
     
-
     context = {
         "tickets":tickets,
         "progress_tickets":progress_tickets,
@@ -95,16 +92,39 @@ def agent_view_ticket(request,id):
 @login_required
 @permission_check(role="agent")
 def agent_comment(request,id):
-    print("It come here and gone. I don`t know where it goes")
+    ticket = get_object_or_404(Ticket,id=id)
+
     if request.method == "POST":
         comment = request.POST.get('comment')
-        ticket = get_object_or_404(Ticket,id=id)
+        attachment = request.FILES.get("file")
 
-        if comment:
-            if not ticket.assign_to :
-                ticket.assign_to = request.user
-                ticket.status = "progress"
-                ticket.save()
+        if not ticket.assign_to :
+            ticket.assign_to = request.user
+            ticket.status = "progress"
+            ticket.save()
+
+        if comment and attachment:
+
+            obj = Comment()
+            obj.ticket = ticket
+            obj.user = request.user
+            obj.content = comment
+            obj.file = attachment
+            obj.save()
+
+            return redirect("agent_view_ticket",id=ticket.id)
+        
+        elif not comment and attachment:
+
+            obj = Comment()
+            obj.ticket = ticket
+            obj.user = request.user
+            obj.file = attachment
+            obj.save()
+
+            return redirect("agent_view_ticket",id=ticket.id)
+        
+        elif comment and not attachment:
 
             obj = Comment()
             obj.ticket = ticket

@@ -179,18 +179,38 @@ def show_tickets(request):
 @permission_check(role="customer")
 def comment(request,id):
     if request.method == "POST":
-        comment = request.POST.get('comment')
         ticket = Ticket.objects.get(id=id)
-        if comment:
+
+        comment = request.POST.get('comment')
+        attachment = request.FILES.get("file")
+        
+        if comment and attachment :
+            obj = Comment()
+            obj.ticket = ticket
+            obj.user = request.user
+            obj.content = comment
+            obj.file = attachment
+
+            obj.save()
+
+            return redirect("view_ticket",id=ticket.id)
+        
+        elif comment and not attachment:
             obj = Comment()
             obj.ticket = ticket
             obj.user = request.user
             obj.content = comment
 
-            if "file" in request.FILES:
-                attachment = request.FILES.getlist("file")
-                obj.file = attachment
-                
+            obj.save()
+
+            return redirect("view_ticket",id=ticket.id)
+        
+        elif not comment and attachment :
+            obj = Comment()
+            obj.ticket = ticket
+            obj.user = request.user
+            obj.file = attachment
+
             obj.save()
 
             return redirect("view_ticket",id=ticket.id)

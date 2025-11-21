@@ -44,7 +44,7 @@ class Ticket(models.Model):
 class Comment(models.Model):
     ticket = models.ForeignKey(Ticket,on_delete=models.CASCADE,related_name="comments")
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,blank=True)
-    content = models.TextField()
+    content = models.TextField(blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to='comment_attachments/',blank=True,null=True)
 
