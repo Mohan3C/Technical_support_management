@@ -222,13 +222,8 @@ def comment(request,id):
 def reopen_ticket(request,id):
     ticket = get_object_or_404(Ticket,id=id)
 
-    new_ticket = Ticket()
-    new_ticket.created_by = request.user
-    new_ticket.title = ticket.title
-    new_ticket.description = ticket.description
-    new_ticket.problem_type = ticket.problem_type
-    new_ticket.priority = ticket.priority
-    new_ticket.save()
+    ticket.status = "open"
+    ticket.save()
 
     return redirect("user_dashboard")
 

@@ -7,7 +7,7 @@
 <div class="fl fle w-full bg-white ">
 
     <div class="w-full flex flex-1 ">
-        <div class="w-5/12  border-x border-gray-600  ">
+        <div class="w-5/12  border-x border-gray-600 bg-gray-100 ">
             <div class="flex flex-col">
                 <div class="px-[7%] py-3 flex flex-1 bg-[#735DA5]">
                     <div class="flex flex-1">
@@ -36,22 +36,23 @@
                             <h3 class=" pr-5 font-bold">Subject</h3>
                         </div>
                         <div class="px-[10%] pb-1 flex flex-1 ">
-                            <h2 class="py-2 px-2 flex flex-1 shadow border rounded whitespace-pre-line">{{ticket.title}}</h2>
+                            <h2 class="py-2 px-2 flex flex-1 bg-white shadow border rounded whitespace-pre-line">{{ticket.title}}</h2>
                         </div>
                         <div class="px-[10%] pt-3 flex flex-1 justify-between">
                             <h3 class="pr-5 font-bold">Description</h3>
                         </div>
                         <div class="px-[10%] pb-1 flex flex-1 my-1 ">
-                            <p class=" flex flex-1 shadow px-2  pt-1 border rounded h-[245px] top-0 overflow-y-auto whitespace-pre-line">{{ticket.description}}</p>
+                            <p class=" flex flex-1 shadow px-2 bg-white pt-1 border rounded h-[245px] top-0 overflow-y-auto whitespace-pre-line">{{ticket.description}}</p>
                         </div>
 
-                        {% if ticket.image %}
+                        {% if ticket.attachments.all %}
                         <div class="px-[10%] pt-2 flex flex-1 justify-between ">
-                            <h3 class=" pr-5 font-bold">Image</h3>
+                            <h3 class=" pr-5 font-bold">attachment</h3>
                         </div>
-                        <div class="px-[10%] pb-1 flex flex-1 bg-[#F3F4F6] ">
-                            <a href="{{ticket.image.url}}" target="_blank"> <img src="{{ticket.image.url}}" alt="Image"
-                                    class="px-5 py-2 mb-5 bg-white h-[100px] w-[100px]"></a>
+                        <div class="px-[10%] pb-1 mb-2 flex flex-col ">
+                            {% for item in ticket.attachments.all %}
+                            <a href="{{item.file.url}}" target="_blank"class="text-blue-400 px-2">{{item.file.name|basename}}</a>
+                            {% endfor  %}
                         </div>
                         {% endif %}
                         <div class="px-[10%] mb-1 flex flex-1 justify-between">
@@ -62,7 +63,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-7/12 h-[740px] overflow-y-scroll ">
+        <div class="w-7/12 h-[713px] bg-gray-100">
             <div class="px-[4%] py-3 flex flex-1 bg-[#735DA5] top-0 sticky justify-between">
                 <div class="flex flex-1">
                     <h2 class="font-bold text-xl text-white">Chat with {{ticket.created_by.username}}</h2>
@@ -71,7 +72,7 @@
                 <a href="{% url 'close_ticket' ticket.id %}" class="font-semibold text-xl text-white px-5 bg-red-500"> close</a>
                 {% endif %}
             </div>
-            <div class="w-full min-h-screen ">
+            <div class="w-full h-[577px] overflow-y-auto ">
                 <div class="flex flex-col">
                     {% if comments %}
 

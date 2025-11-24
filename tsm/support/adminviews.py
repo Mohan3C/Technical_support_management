@@ -1,6 +1,7 @@
 from django.db import models
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
+from itertools import chain
 
 from .models import User,Ticket,Comment
 from .decorators import permission_check
@@ -12,18 +13,26 @@ def admin_dashboard(request):
     customer = User.objects.filter(role="customer")
     agent = User.objects.filter(role="agent")
 
-    ticket = Ticket.objects.all()
-    open_ticket_count = ticket.filter(status = "open").count()
-    closed_ticket_count = ticket.filter(status="closed").count()
-    progress_ticket_count = ticket.filter(status="progress").count()
+    tickets = Ticket.objects.all()
+    open_tickets = tickets.filter(status = "open")[:15]
+    closed_ticket_count = tickets.filter(status="closed").count()
+    progress_ticket_count = tickets.filter(status="progress").count()
+
+    key = lambda obj:getattr(obj,"created_at",getattr(obj,"date_joined",None))
+
+    activities = sorted(chain(customer,tickets),key=key,reverse=True)[:15]
+
+    for activity in activities:
+        activity.model = activity.__class__.__name__
 
     context = {
         "customer":customer,
         "agent":agent,
-        "ticket":ticket,
-        "open_ticket_count":open_ticket_count,
+        "tickets":tickets,
+        "open_tickets":open_tickets,
         "closed_ticket_count":closed_ticket_count,
         "progress_ticket_count":progress_ticket_count,
+        "activities":activities
     }
 
     return render(request,"adminuser/dashboard.html",context)

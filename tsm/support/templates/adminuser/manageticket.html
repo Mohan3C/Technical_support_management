@@ -2,44 +2,70 @@
 
 {% block content %}
 
-<div class="py-5 bg-rose-200 h-[740px] overflow-y-scroll ">
-    <div class="bg-rose-200 py-2 mx-3 mb-3 flex items-center">
-        <h2 class="px-4 py-2 bg-red-500 font-semibold text-white text-xl rounded ">Tickets</h2>
+<div class="py-5 bg-gray-200 h-[717px] overflow-y-scroll px-20 ">
+    <div class="py-2 mx-3 mb-3 flex flex-col">
+        <h2 class="px-4 py-2 font-bold text-xl text-xl ">Manage Tickets</h2>
+        <span class="text-gray-500 text-sm px-4 font-semibold">Monitor, assign, and resolve all support tickets</span>
+    </div>
+    <div class="flex flex-1 w-full px-3 mb-5 mt-10">
+        <div class=" flex flex-row w-[30%] px-4 bg-white rounded-lg items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6 text-gray-500">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+
+            <input type="text" name="" class="px-6 py-2 focus:outline-none focus:ring-0"
+                placeholder="search by ID,Subject or Type .. ">
+        </div>
+        <div class="flex flex-1 justify-end px-10 items-center border rounded-b-lg">
+            <div class=" text-gray-500">
+                <button
+                    class="px-2 py-2 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Type</button>
+                <button
+                    class="px-2 py-2 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Agent</button>
+            </div>
+        </div>
     </div>
     <div class="flex flex-col bg-white mx-3 px-[2%] py-5 rounded-lg">
         <h2 class="pb-2 font-bold">Open Tickets</h2>
-        <hr>
-        <div class="pt-3 flex flex-1 justify-center px-0">
+        <div class=" flex flex-1 justify-center px-0 {% if open_tickets %} border rounded-t-lg{% endif %}">
             {% if open_tickets %}
             <table class=" w-full">
                 <thead>
-                    <tr class="">
-                        <th class="py-2 border">Ticket ID</th>
-                        <th class="py-2 border">Customer</th>
-                        <th class="py-2 border">Type</th>
-                        <th class="py-2 border">Title</th>
-                        <th class="py-2 border">Priority</th>
-                        <th class="py-2 border">Action</th>
+                    <tr class="bg-gray-100 text-left">
+                        <th class="py-2 px-4">ID</th>
+                        <th class="py-2 px-2">Customer</th>
+                        <th class="py-2 px-2">Type</th>
+                        <th class="py-2 px-2">Subject</th>
+                        <th class="py-2 px-2">Priority</th>
+                        <th class="py-2 px-2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                     {% for ticket in open_tickets %}
-                    <tr class="">
-                        <td class="px-2 py-2 border flex justify-center"><a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.id}}</a></td>
-                        <td class="px-2 py-2 border"><a href="{% url 'view_customer' ticket.created_by.id %}">{{ticket.created_by.username}}</a></td>
-                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
-                        <td class="px-2 py-2 border"><a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.title}}</a></td>
-                        <td class="px-2 py-2 border">{{ticket.priority}}</td>
-                        <td class="border ">
-                            <div class="flex flex-row gap-3 mx-2 justify-center">
-                                <a href="{% url 'admin_take' ticket.id %}" class="text-indigo-500 font-semibold ">Take</a>
-                                <a href="{% url 'admin_view_ticket' ticket.id %}" class="text-green-500 font-semibold ">View</a>
+                    <tr class="hover:bg-gray-100 ">
+                        <td class="px-2 py-2 border-t flex justify-center"><a
+                                href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.id}}</a></td>
+                        <td class="px-2 py-2 border-t"><a
+                                href="{% url 'view_customer' ticket.created_by.id %}">{{ticket.created_by.username}}</a>
+                        </td>
+                        <td class="px-2 py-2 border-t">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border-t"><a
+                                href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.title}}</a></td>
+                        <td class="px-2 py-2 border-t">{{ticket.priority}}</td>
+                        <td class="border-t ">
+                            <div class="flex flex-row gap-3 justify-center">
+                                <a href="{% url 'admin_take' ticket.id %}"
+                                    class="text-indigo-500 font-semibold ">Take</a>
+                                <a href="{% url 'admin_view_ticket' ticket.id %}"
+                                    class="text-green-500 font-semibold ">View</a>
                             </div>
                         </td>
                     </tr>
                     {% endfor %}
-                    
+
                 </tbody>
             </table>
             {% else %}
@@ -50,33 +76,41 @@
 
     <div class="flex flex-col bg-white mx-3 px-[2%] mt-5 py-5 rounded-lg">
         <h2 class="pb-2 font-bold">Open Tickets by Priority </h2>
-        <hr>
-        <div class="pt-3 flex flex-1 justify-center px-0">
+        <div class=" flex flex-1 justify-center  {% if tickets_by_priority %}border rounded-t-lg{% endif %}">
             {% if tickets_by_priority %}
             <table class=" w-full">
                 <thead>
-                    <tr class="">
-                        <th class="py-2 border">Priority</th>
-                        <th class="py-2 border">Customer</th>
-                        <th class="py-2 border">Ticket ID</th>
-                        <th class="py-2 border">Type</th>
-                        <th class="py-2 border">Title</th>
-                        <th class="py-2 border">Action</th>
+                    <tr class="bg-gray-100">
+                        <th class="py-2 px-4 text-left">Priority</th>
+                        <th class="py-2 px-2 text-left">Customer</th>
+                        <th class="py-2 px-2 text-left">ID</th>
+                        <th class="py-2 px-2 text-left">Type</th>
+                        <th class="py-2 px-2 text-left">Subject</th>
+                        <th class="py-2 px-2 text-left">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                     {% for ticket in tickets_by_priority %}
-                    <tr class="">
-                        <td class="px-2 py-2 border uppercase flex justify-center">{{ticket.priority}}</td>
-                        <td class="px-2 py-2 border"><a href="{% url 'view_customer' ticket.created_by.id %}">{{ticket.created_by.username}}</a></td>
-                        <td class="px-2 py-2 border"><a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.id}}</a></td>
-                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
-                        <td class="px-2 py-2 border"><a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.title}}</a></td>
-                        <td class="px-2 py-1 border flex justify-center"><a href="{% url 'admin_view_ticket' ticket.id %}" class="px-2 py-1 bg-green-400 mx-2">View</a></td>
+                    <tr class="hover:bg-gray-100">
+                        <td class="px-2 py-2 border-t uppercase flex justify-center">{{ticket.priority}}</td>
+                        <td class="px-2 py-2 border-t">
+                            <a href="{% url 'view_customer' ticket.created_by.id %}">{{ticket.created_by.username}}</a>
+                        </td>
+                        <td class="px-2 py-2 border-t">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.id}}</a>
+                        </td>
+                        <td class="px-2 py-2 border-t">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border-t">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.title}}</a>
+                        </td>
+                        <td class="px-2 py-1 border-t flex justify-center">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}"
+                                class="px-2 py-1  text-green-500 font-semibold">View</a>
+                        </td>
                     </tr>
                     {% endfor %}
-                    
+
                 </tbody>
             </table>
             {% else %}
@@ -86,33 +120,43 @@
     </div>
     <div class="flex flex-col bg-white mx-3 px-[2%] my-5 py-5 rounded-lg">
         <h2 class="pb-2 font-bold">In Progress Tickets</h2>
-        <hr>
-        <div class="pt-3 flex flex-1 justify-center px-0">
+        <div class=" flex flex-1 justify-center h-[100px] overflow-y-auto {% if progress_tickets %}border rounded-t-lg{% endif %}">
             {% if progress_tickets %}
             <table class=" w-full">
                 <thead>
-                    <tr class="">
-                        <th class="py-2 border">Ticket ID</th>
-                        <th class="py-2 border">Customer</th>
-                        <th class="py-2 border">Type</th>
-                        <th class="py-2 border">Title</th>
-                        <th class="py-2 border">Assign To</th>
-                        <th class="py-2 border">Action</th>
+                    <tr class="bg-gray-100">
+                        <th class="py-2 px-4 text-left ">ID</th>
+                        <th class="py-2 px-2 text-left ">Customer</th>
+                        <th class="py-2 px-2 text-left ">Type</th>
+                        <th class="py-2 px-2 text-left ">Subject</th>
+                        <th class="py-2 px-2 text-left ">Assign To</th>
+                        <th class="py-2 px-2 text-left ">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                     {% for ticket in progress_tickets %}
-                    <tr class="">
-                        <td class="px-2 py-2 border "><a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.id}}</a></td>
-                        <td class="px-2 py-2 border"><a href="{% url 'view_customer' ticket.created_by.id %}">{{ticket.created_by.username}}</a></td>
-                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
-                        <td class="px-2 py-2 border"><a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.title}}</a></td>
-                        <td class="px-2 py-2 border">{% if ticket.assign_to %}<a href="{% url 'view_agent' ticket.assign_to.id %}">{{ticket.assign_to.username}}</a>{% else %} Not assigned {% endif %}</td>
-                        <td class="px-2 py-2 border "><a href="{% url 'admin_view_ticket' ticket.id %}" class="px-2 py-2 bg-green-400">View</a></td>
+                    <tr class="hover:bg-gray-100">
+                        <td class="px-2 py-2 border-t ">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.id}}</a>
+                        </td>
+                        <td class="px-2 py-2 border-t">
+                            <a href="{% url 'view_customer' ticket.created_by.id %}">{{ticket.created_by.username}}</a>
+                        </td>
+                        <td class="px-2 py-2 border-t">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border-t">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.title}}</a>
+                        </td>
+                        <td class="px-2 py-2 border-t">{% if ticket.assign_to %}
+                            <a href="{% url 'view_agent' ticket.assign_to.id %}">{{ticket.assign_to.username}}</a>{% else %} Not assigned {% endif %}
+                        </td>
+                        <td class="px-2 py-2 border-t ">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}"
+                                class="px-2 py-2 text-green-400 font-semibold">View</a>
+                        </td>
                     </tr>
                     {% endfor %}
-                    
+
                 </tbody>
             </table>
             {% else %}
@@ -124,32 +168,43 @@
     <div class="flex flex-col bg-white mx-3 px-[2%] py-5 rounded-lg">
         <h2 class="pb-2 font-bold">Closed Tickets</h2>
         <hr>
-        <div class="pt-3 flex flex-1 justify-center px-0">
+        <div class="flex flex-1 justify-center {% if closed_tickets %} border rounded-t-lg{% endif %} ">
             {% if closed_tickets %}
-            <table class=" w-full">
+            <table class=" w-full ">
                 <thead>
-                    <tr class="">
-                        <th class="py-2 border">Ticket ID</th>
-                        <th class="py-2 border">Customer</th>
-                        <th class="py-2 border">Type</th>
-                        <th class="py-2 border">Title</th>
-                        <th class="py-2 border">Assign To</th>
-                        <th class="py-2 border">Action</th>
+                    <tr class="bg-gray-100">
+                        <th class="py-2 px-4 text-left">ID</th>
+                        <th class="py-2 px-2 text-left">Customer</th>
+                        <th class="py-2 px-2 text-left">Type</th>
+                        <th class="py-2 px-2 text-left">Subject</th>
+                        <th class="py-2 px-2 text-left">Assign To</th>
+                        <th class="py-2 px-2 text-left">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                     {% for ticket in closed_tickets %}
-                    <tr class="">
-                        <td class="px-2 py-2 border"><a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.id}}</a></td>
-                        <td class="px-2 py-2 border"><a href="{% url 'view_customer' ticket.created_by.id %}">{{ticket.created_by.username}}</a></td>
-                        <td class="px-2 py-2 border">{{ticket.problem_type}}</td>
-                        <td class="px-2 py-2 border"><a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.title}}</a></td>
-                        <td class="px-2 py-2 border">{% if ticket.assign_to %}<a href="{% url 'view_agent' ticket.assign_to.id %}">{{ticket.assign_to.username}}</a>{% else %} Not assigned {% endif %}</td>
-                        <td class="px-2 py-2 border flex justify-center"><a href="{% url 'admin_view_ticket' ticket.id %}" class="px-2 py-2 bg-green-400 mx-2 my-1">View</a></td>
+                    <tr class="hover:bg-gray-100">
+                        <td class="px-2 py-2 border-t">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.id}}</a>
+                        </td>
+                        <td class="px-2 py-2 border-t">
+                            <a href="{% url 'view_customer' ticket.created_by.id %}">{{ticket.created_by.username}}</a>
+                        </td>
+                        <td class="px-2 py-2 border-t">{{ticket.problem_type}}</td>
+                        <td class="px-2 py-2 border-t">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}">{{ticket.title}}</a>
+                        </td>
+                        <td class="px-2 py-2 border-t">{% if ticket.assign_to %}
+                            <a href="{% url 'view_agent' ticket.assign_to.id %}">{{ticket.assign_to.username}}</a>{% else %} Not assigned {% endif %}
+                        </td>
+                        <td class="px-2 py-2 border-t flex justify-center">
+                            <a href="{% url 'admin_view_ticket' ticket.id %}"
+                                class="px-2 py-2 text-green-400 font-semibold">View</a>
+                        </td>
                     </tr>
                     {% endfor %}
-                    
+
                 </tbody>
             </table>
             {% else %}

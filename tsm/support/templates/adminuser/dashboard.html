@@ -1,32 +1,157 @@
 {% extends "adminuser/base.html" %}
 
+{% load static %}
+
+{% load humanize %}
+
 {% block content %}
 
-<div class="w-full mt-5">
-    <div class="grid grid-cols-3 gap-5  px-5 ">
-        <a href="{% url 'manage_customer' %}">
-            <div class="bg-indigo-400 px-5 py-3 rounded-lg">
-            <h2>Customers</h2>
-            <span>{{customer|length}}</span>
-        </div>
-        </a>
-       <a href="{% url 'admin_agent' %}">
-         <div class="bg-blue-400 px-5 py-3 rounded-lg">
-            <h2>Agents</h2>
-            <span>{{agent|length}}</span>
-        </div>
-       </a>
+<div class="w-full mt-5 overflow-y-auto h-[677px]">
+    <div class="my-16 mx-20 flex flex-col">
+        <h2 class="text-2xl font-bold text-gray-800">Welcome back, Admin</h2>
+        <p class="text-gray-600 mt-2">Here`s what`s happening with your platform Today</p>
+    </div>
+    <div class="grid grid-cols-4 gap-5 mx-20 ">
         <a href="{% url 'admin_ticket' %}">
-            <div class="bg-teal-400 px-5 py-3 rounded-lg">
-            <h2>Tickets</h2>
-            <span>{{ticket|length}}</span>
-        </div>
+            <div class="flex flex-1 justify-between px-6 rounded-lg shadow items-center bg-white">
+                <div class="py-3 flex-flex-col">
+                    <h2>Total Tickets</h2>
+                    <span class="text-2xl font-semibold px-2">{{tickets|length}}</span>
+                    <p class="text-sm text-gray-500">All Times</p>
+                </div>
+                <h2 class="px-6 py-4 bg-sky-100 rounded-lg text-sky-600 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="size-8">
+                        <path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z" />
+                        <path d="M9 5v14" />
+                        <path d="M8.5 9h.01" />
+                        <path d="M8.5 12h.01" />
+                        <path d="M8.5 15h.01" />
+                        <path d="M13 10h5" />
+                        <path d="M13 14h5" />
+                    </svg>
+                </h2>
+            </div>
         </a>
-        <div class="bg-green-400 px-5 py-3 rounded-lg">
-            <h2>User</h2>
+        <a href="{% url 'manage_customer' %}">
+            <div class=" px-6 py-3 rounded-lg flex flex-1 bg-white shadow justify-between items-center">
+                <div class="flex flex-col px-2">
+                    <h2>Users</h2>
+                    <span class="text-2xl px-2 font-bold">{{customer|length}}</span>
+                    <p class="text-sm text-gray-500">Registered</p>
+                </div>
+                <h2 class="px-6 py-4 bg-purple-100 text-purple-500  rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="size-8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                    </svg>
+                </h2>
+            </div>
+        </a>
+        <a href="{% url 'admin_agent' %}">
+            <div class="flex flex-1 rounded-lg shadow px-6 py-3 bg-white justify-between items-center">
+                <div class=" px-2 flex flex-col">
+                    <h2>Agents</h2>
+                    <span class="text-2xl font-bold px-2">{{agent|length}}</span>
+                    <p class="text-gray-600 text-sm">staff</p>
+                </div>
+                <h2 class="px-6 py-3 bg-orange-100 rounded-lg">
+                    <img src="{% static 'customer_support.svg' %}" alt="" class="h-[40px] w-[40px]">
+                </h2>
+            </div>
+        </a>
+        <div class="bg-white shadow px-6 py-3 rounded-lg flex flex-1 justify-between items-center">
+            <div class="flex flex-col px-2">
+                <h2 class="whitespace-nowrap">Comments</h2>
+                <span class="px-2 font-bold text-2xl">30</span>
+                <p class="text-sm text-gray-600">Conversations</p>
+            </div>
+            <h2 class="px-6 py-4 bg-indigo-100 rounded-lg ">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-8">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                </svg>
+
+            </h2>
         </div>
-        <div class="bg-slate-300 px-5 py-3 rounded-lg">
-            <h2>User</h2>
+    </div>
+    <div class="mx-20 my-6 gap-10 grid grid-cols-2">
+        <div class="">
+            <div class="flex flex-col bg-white shadow-lg p-5 mt-10 rounded-lg">
+                <h2 class="pb-3 font-bold"> Recent activity</h2>
+                <hr class="">
+                <div class="pt-2 h-[300px] overflow-y-scroll">
+                    {% if activities %}
+                    {% for recent in activities %}
+                    {% if recent.model == 'Ticket' %}
+                    <div class="flex flex-1 w-full">
+                        <h2 class="text-sm text-indigo-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                stroke-linejoin="round" class="size-8">
+                                <path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z" />
+                                <path d="M9 5v14" />
+                                <path d="M8.5 9h.01" />
+                                <path d="M8.5 12h.01" />
+                                <path d="M8.5 15h.01" />
+                                <path d="M13 10h5" />
+                                <path d="M13 14h5" />
+                            </svg>
+                        </h2>
+                        <p class="px-4">#{{recent.id}}</p>
+                        <span class="px-2 font-semibold text-gray-600">"{{recent.title|truncatewords:3}}"</span>
+                        <span class="text-green-400 pl-2 text-sm ">{{recent.update_at|naturaltime}}</span>
+
+                    </div>
+                    {% else %}
+                    <div class="flex flex-row w-full">
+                        <p class="text-sm text-purple-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+
+                        </p><span class="px-5 font-semibold">#{{recent.id}}</span><span class="font-semibold px-4 text-gray-700">{{recent.username}} is register</span> <span
+                            class="text-sm text-green-400 pl-2">{{recent.date_joined}}</span>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <div class="flex flex-col bg-white shadow-lg p-5 mt-10 rounded-lg">
+                <h2 class="pb-3 font-bold"> Recent open Tickets</h2>
+                <hr class="">
+                <div class="pt-2 h-[300px] overflow-y-scroll w-full ">
+                    <table class="w-full px-6">
+                        <thead class="">
+                            <tr class="gap-10 px-12 border-b pb-2 border-gray-200 text-left ">
+                                <th class="px-2 whitespace-nowrap ">Ticket ID</th>
+                                <th class="pl-16 ">Subject</th>
+                            </tr>
+                        </thead>
+
+                        {% if open_tickets %}
+                        {% for ticket in open_tickets %}
+                        <tbody class="">
+                            <tr class="gap-10 text-left border-b border-gray-200">
+                                <td class="px-4 py-2 text-purple-600">#{{ticket.id}}</td>
+                                <td class="pl-16 py-2">{{ticket.title|truncatewords:4}}</td>
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% endif %}
+
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

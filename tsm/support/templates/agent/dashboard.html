@@ -1,107 +1,142 @@
 {% extends "agent/base.html" %}
 
 {% load humanize %}
+{% load static %}
 
 {% block content %}
 
-<div class="min-h-screen  px-[8%] bg-rose-200 py-5">
-    <div class="bg-rose-200 -mx-[8%] py-2 flex justify-between items-center">
-        <h2 class="font-bold text-3xl">Agent Dashboard</h2>
-        <a href="{% url 'profile' %}"
-            class="px-4 py-2 bg-red-500 rounded font-semibold text-white uppercase">Profile</a>
+<div class="w-full bg-gray-100 overflow-y-auto h-[710px] px-20 ">
+    <div class="my-16 flex flex-col">
+        <h2 class="text-2xl font-bold text-gray-800">Welcome back, {{request.user.username}}</h2>
+        <p class="text-gray-600 mt-2">Here`s your support activity overview.</p>
     </div>
-    <div class="w-full flex flex-1 gap-5">
-        <div class="w-8/12">
-            <div class="pt-10 grid grid-cols-2 gap-10 flex justify-betwwen  ">
-                <a href="{% url 'agent_ticket' %}" class="self-start">
-                    <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg ">
-                        <h2 class="font-bold text-2xl">Tickets</h2>
-                        <span class="px-1 text-red-500 font-semibold">{{tickets|length}}</span>
-                        <div class="flex flex-1 justify-between items-between pt-5">
-                            <h2>In process Tickets : <span class="text-red-500">{{progress_tickets|length}}</span> </h2>
-                            <h2>Closed Tickets : <span class="text-green-500">{{closed_tickets|length}}</span></h2>
-                        </div>
-                    </div>
-                </a>
-                <!-- <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg">
-                    <h2 class="pb-2 font-bold">In progress Tickets</h2>
-                    <hr>
-                    <div class="pt-3 flex flex-1 justify-center px-0">
-                        {% if progress_tickets %}
-                        <table class=" w-full">
-                            <thead>
-                                <tr class="">
-                                    <th class=" border">ID</th>
-                                    <th class=" border">Title</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for ticket in progress_tickets %}
-                                <tr class="">
-                                    <td class="px-2 border">#{{ticket.id}}</td>
-                                    <td class="px-2 border">{{ ticket.title|truncatewords:5 }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% else %}
-                        <h2 class="font-semibold text-xl text-slate-400">There is no In Process Ticket.</h2>
-                        {% endif %}
-                    </div>
-                </div> -->
-                <div class="flex flex-col p-5 bg-white shadow-lg rounded-lg self-start">
-                    <h2 class="pb-2 font-bold">Recent Tickets</h2>
-                    <hr>
-                    <div class="pt-3 flex flex-1 justify-center px-0">
-                        {% if recent_tickets %}
-                        <table class=" w-full">
-                            <thead>
-                                <tr class="">
-                                    <th class=" border">ID</th>
-                                    <th class=" border">Title</th>
-                                    <th class=" border">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for ticket in recent_tickets %}
-                                <tr class="">
-                                    <td class="px-2 border">{{ticket.id}}</td>
-                                    <td class="px-2 border">{{ticket.title|truncatewords:5}}</td>
-                                    <td class="px-2 border">{{ticket.status}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% else %}
-                        <h2 class="font-semibold text-xl text-slate-400">There is no activity recently</h2>
-                        {% endif %}
-                    </div>
+    <div class="grid grid-cols-4 gap-5  ">
+        <a href="{% url 'agent_ticket' %}">
+            <div class="flex flex-1 justify-between px-6 rounded-lg shadow items-center bg-white">
+                <div class="py-3 flex-flex-col">
+                    <h2>Progress Tickets</h2>
+                    <span class="text-2xl font-semibold px-2">{{tickets|length}}</span>
+                    <p class="text-sm text-gray-500">All Times</p>
                 </div>
+                <h2 class="px-4 py-2 bg-sky-100 rounded-lg text-sky-600 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="size-8">
+                        <path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z" />
+                        <path d="M9 5v14" />
+                        <path d="M8.5 9h.01" />
+                        <path d="M8.5 12h.01" />
+                        <path d="M8.5 15h.01" />
+                        <path d="M13 10h5" />
+                        <path d="M13 14h5" />
+                    </svg>
+                </h2>
             </div>
-        </div>
-        <div class="w-4/12 ">
-            <div class="flex flex-col bg-white shadow-lg p-5 mt-10 rounded-lg">
-                <h2 class="pb-3 font-bold"> Recent activity</h2>
-                <hr class="">
-                <div class="pt-2">
-                    {% if activities %}
-                    {% for recent in activities %}
-                    {% if recent.model == 'Ticket' %}
-                    <p class="text-sm">Ticket: #{{recent.id}} "{{recent.title|truncatewords:3}}"<span
-                            class="text-green-400 pl-2 ">{{recent.update_at|naturaltime}}</span></p>
-                    {% else %}
-                    <p class="text-sm">Comment: Ticket-{{recent.ticket.id}} "{{recent.content|truncatewords:3}}"<span
-                            class="text-sm text-green-400 pl-2">{{recent.created_at|naturaltime}}</span> </p>
-                    {% endif %}
-                    {% endfor %}
-                    {% endif %}
+        </a>
+        <a href="{% url 'agent_ticket' %}">
+            <div class=" px-6 py-3 rounded-lg flex flex-1 bg-white shadow justify-between items-center">
+                <div class="flex flex-col px-2">
+                    <h2>Resolved Tickets</h2>
+                    <span class="text-2xl px-2 font-bold">5</span>
+                    <p class="text-sm text-gray-500">Closed</p>
+                </div>
+                <h2 class="px-4 py-2 bg-green-200 text-green-700  rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
 
-                </div>
+                </h2>
             </div>
+        </a>
+        <a href="{% url 'agent_ticket' %}">
+            <div class="flex flex-1 rounded-lg shadow px-6 py-3 bg-white justify-between items-center">
+                <div class=" px-2 flex flex-col">
+                    <h2>Replies</h2>
+                    <span class="text-2xl font-bold px-2">6</span>
+                    <p class="text-gray-600 text-sm">staff</p>
+                </div>
+                <h2 class="px-4 py-2 bg-orange-100  text-orange-400 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                    </svg>
+                </h2>
+            </div>
+        </a>
+        <div class="bg-white shadow px-6 py-3 rounded-lg flex flex-1 justify-between items-center">
+            <div class="flex flex-col px-2">
+                <h2 class="whitespace-nowrap">Weekly tickets</h2>
+                <span class="px-2 font-bold text-2xl">30</span>
+                <p class="text-sm text-gray-600">Closed</p>
+            </div>
+            <h2 class="px-4 py-2 bg-indigo-100 rounded-lg ">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-8">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                </svg>
+
+            </h2>
         </div>
     </div>
+    <div class="flex flex-col bg-white px-[4%] h-[450px] overflow-y-auto my-10 pb-6 pt-4 rounded-lg shadow">
+        <h2 class="pb-2 px-2 text-gray-700 font-bold">Open Tickets</h2>
 
+        <div class=" flex flex-col justify-center px-0  {% if open_tickets %} border rounded-t-lg {% endif %}">
+            <div class="w-full">
+                <table class=" w-full ">
+                    <thead>
+                        <tr class=" bg-gray-100 text-left {% if not open_tickets %} border {% endif %}">
+                            <th class="py-2 px-4">ID</th>
+                            <th class="py-2 px-4">Subject</th>
+                            <th class="py-2 px-4">Priority</th>
+                            <th class="py-2 px-4">Type</th>
+                            <th class="py-2 px-4">Customer</th>
+                            <th class="py-2 px-4">Action</th>
+                        </tr>
+                    </thead>
+                    {% if open_tickets %}
+                    <tbody>
+                        {% for ticket in open_tickets %}
+                        <tr class="border-t border-gray-200 hover:bg-gray-100">
+                            <td class="px-4 py-4 ">{{ticket.id}}</td>
+                            <td class="px-2 py-4 ">{{ticket.title|truncatewords:5}}</td>
+                            <td class="px-2 py-4 ">{{ticket.priority}}</td>
+                            <td class="px-2 py-4 ">{{ticket.problem_type}}</td>
+                            <td class="px-2 py-4 ">{{ticket.created_by.username}}</td>
+                            <td class=" ">
+                                <div class="w-full gap-2">
+                                    <a href="{% url 'agent_view_ticket' ticket.id %}"
+                                        class="font-semibold text-green-400 pr-4">View</a>
+                                    <a href="{% url 'take_ticket' ticket.id %}"
+                                        class="font-semibold text-indigo-400  ">Take</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    {% endif %}
+                </table>
+            </div>
+            {% if not open_tickets %}
+            <h2 class="pt-5 text-slate-300 font-semibold text-xl flex justify-center items-center">There is no open ticket.</h2>
+            {% endif %}
+        </div>
+        {% if open_tickets %}
+        <div class="flex flex-1 justify-between px-10 py-2 items-center bg-gray-100 border rounded-b-lg">
+            <h2 class="text-gray-500 text-sm">Showing 6 results</h2>
+            <div class="gap-2 text-gray-500">
+                <button
+                    class="px-2 py-1 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Previous</button>
+                <button
+                    class="px-2 py-1 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Next</button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </div>
-
 
 {% endblock %}

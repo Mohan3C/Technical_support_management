@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="w-full">
+<!-- <div class="w-full">
     <div class="flex flex-col bg-white mx-3 px-[2%] my-5 py-5 rounded-lg">
         <h2 class="pb-2 font-bold">Agent</h2>
         <hr>
@@ -98,6 +98,193 @@
             </table>
             {% else %}
             <h2 class="pt-5 text-slate-300 font-semibold text-xl">There is no Closed ticket until Now.</h2>
+            {% endif %}
+        </div>
+    </div>
+</div> -->
+
+<div class="h-[717px] w-full overflow-y-auto">
+    <div class="px-20">
+        <div class="flex flex-col bg-white mx-3 px-[2%] my-5 py-5 rounded-lg shadow">
+            <h2 class="pb-2 px-2 font-bold"> Agent Detail</h2>
+            <hr>
+            <div class="w-full">
+                <div class="pt-3 flex flex-1 px-[10%]">
+
+                    <table class="table w-full  col-span-2">
+                        <tr>
+                            <th class="p-3">Agent ID</th>
+                            <td class="p-3">{{agent.id}}</td>
+                        </tr>
+                        <tr>
+                            <th class="p-3">Agent Name</th>
+                            <td class="p-3">{{agent.username}}</td>
+                        </tr>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- <div class="flex flex-col bg-white mx-3 px-[4%] my-10 pb-6 pt-4 rounded-lg shadow">
+            <h2 class="pb-2 px-2 text-gray-700 font-bold">Open Tickets</h2>
+
+            <div class=" flex flex-1 justify-center px-0 {% if open_tickets %} border rounded-t-lg {% endif %}">
+                {% if open_tickets %}
+                <table class=" w-full ">
+                    <thead>
+                        <tr class=" bg-gray-100 text-left">
+                            <th class="py-2 px-4">ID</th>
+                            <th class="py-2 px-4">Subject</th>
+                            <th class="py-2 px-4">Priority</th>
+                            <th class="py-2 px-4">Type</th>
+                            <th class="py-2 px-4">Assign To</th>
+                            <th class="py-2 px-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in open_tickets %}
+                        <tr class="border-t border-gray-200 hover:bg-gray-100">
+                            <td class="px-4 py-4 ">{{ticket.id}}</td>
+                            <td class="px-2 py-4 ">{{ticket.title|truncatewords:5}}</td>
+                            <td class="px-2 py-4 ">{{ticket.priority}}</td>
+                            <td class="px-2 py-4 ">{{ticket.problem_type}}</td>
+                            <td class="px-2 py-4 ">
+
+                                <form action="{% url 'assign_agent' ticket.id %}" method="post" ">
+                                {% csrf_token %}
+                                <select name=" userId" id="" onchange="this.form.submit()" class="bg-white text-indigo-400 hover:bg-gray-100 font-semibold">
+                                    <option value="" selected disabled>Choose agent</option>
+                                    {% for agent in agents %}
+                                    <option value="{{agent.id}}" class="text-white">{{agent.username}}</option>
+                                    {% endfor %}
+                                    </select>
+                                </form>
+
+                            </td>
+                            <td class=" ">
+                                <div class="w-full gap-2">
+                                    <a href="{% url 'admin_view_ticket' ticket.id %}"
+                                        class="font-semibold text-green-400 pr-4">View</a>
+                                    <a href="{% url 'admin_take' ticket.id %}"
+                                        class="font-semibold text-indigo-400  ">Take</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <h2 class="pt-5 text-slate-300 font-semibold text-xl">There is no open ticket.</h2>
+                {% endif %}
+            </div>
+            {% if open_tickets %}
+            <div class="flex flex-1 justify-between px-10 py-2 items-center bg-gray-100 border rounded-b-lg">
+                <h2 class="text-gray-500 text-sm">Showing 6 results</h2>
+                <div class="gap-2 text-gray-500">
+                    <button
+                        class="px-2 py-1 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Previous</button>
+                    <button
+                        class="px-2 py-1 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Next</button>
+                </div>
+            </div>
+            {% endif %}
+        </div> -->
+        <div class="flex flex-col bg-white mx-3 px-[4%] my-5 py-5 rounded-lg shadow">
+            <h2 class="pb-2 px-2 text-gray-700 font-bold">In Progress Tickets</h2>
+            <div class=" flex flex-1 justify-center {% if progress_tickets %} rounded-t-lg border {% endif %}">
+                {% if progress_tickets %}
+                <table class=" w-full">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="py-2 text-left px-4">ID</th>
+                            <th class="py-2 text-left px-2">Subject</th>
+                            <th class="py-2 text-left px-2">Priority</th>
+                            <th class="py-2 text-left px-2">Type</th>
+                            <th class="py-2 text-left px-2">Customer</th>
+                            <th class="py-2 text-left px-2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in progress_tickets %}
+                        <tr class="hover:bg-gray-100 ">
+                            <td class="px-4 py-4 border-t">{{ticket.id}}</td>
+                            <td class="px-2 py-4 border-t">{{ticket.title}}</td>
+                            <td class="px-2 py-4 border-t">{{ticket.priority}}</td>
+                            <td class="px-2 py-4 border-t">{{ticket.problem_type}}</td>
+                            <td class="px-2 py-2 border-t">
+                                <a href="{% url 'view_customer' ticket.created_by.id %}">{{ticket.created_by.username}}</a>
+                            </td>
+                            <td class="px-2 py-2 border-t ">
+                                <a href="{% url 'admin_view_ticket' ticket.id %}"
+                                    class="font-semibold text-green-400">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <h2 class="pt-5 text-slate-300 font-semibold text-xl">There is no In progress ticket.</h2>
+                {% endif %}
+            </div>
+            {% if progress_tickets %}
+            <div class="flex flex-1 justify-between px-10 py-2 items-center bg-gray-100 border rounded-b-lg">
+                <h2 class="text-gray-500 text-sm">Showing 6 results</h2>
+                <div class="gap-2 text-gray-500">
+                    <button
+                        class="px-2 py-1 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Previous</button>
+                    <button
+                        class="px-2 py-1 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Next</button>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="flex flex-col bg-white mx-3 py-6 px-[4%] my-6 rounded-lg shadow">
+            <h2 class="pb-2 px-2 text-gray-700 font-bold">Closed Tickets</h2>
+            <div class=" flex flex-1 justify-center {% if closed_tickets %} border rounded-t-lg {% endif %}" >
+                {% if closed_tickets %}
+                <table class=" w-full">
+                    <thead>
+                        <tr class=" bg-gray-100">
+                            <th class="py-2 px-4 text-left">ID</th>
+                            <th class="py-2 px-2 text-left">Subject</th>
+                            <th class="py-2 px-2 text-left">Priority</th>
+                            <th class="py-2 px-2 text-left">Type</th>
+                            <th class="py-2 px-2 text-left">Customer</th>
+                            <th class="py-2 px-2 text-left">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in closed_tickets %}
+                        <tr class=" hover:bg-gray-100">
+                            <td class="px-4 py-4 border-t">{{ticket.id}}</td>
+                            <td class="px-2 py-4 border-t">{{ticket.title}}</td>
+                            <td class="px-2 py-4 border-t">{{ticket.priority}}</td>
+                            <td class="px-2 py-4 border-t">{{ticket.problem_type}}</td>
+                            <td class="px-2 py-2 border-y"><a href="{% url 'view_customer' ticket.created_by.id %}">{{ticket.created_by.username}}</a></td>
+                            <td class="px-2 py-4 border-t ">
+                                <a href="{% url 'admin_view_ticket' ticket.id %}"
+                                    class="font-semibold text-green-400">View</a>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <h2 class="pt-5 text-slate-300 font-semibold text-xl">You haven`t Closed any ticket until Now.</h2>
+                {% endif %}
+            </div>
+            {% if closed_tickets %}
+            <div class="flex flex-1 justify-between px-10 py-2 items-center bg-gray-100 border rounded-b-lg">
+                <h2 class="text-gray-500 text-sm">Showing 6 results</h2>
+                <div class="gap-2 text-gray-500">
+                    <button
+                        class="px-2 py-1 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Previous</button>
+                    <button
+                        class="px-2 py-1 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Next</button>
+                </div>
+            </div>
             {% endif %}
         </div>
     </div>

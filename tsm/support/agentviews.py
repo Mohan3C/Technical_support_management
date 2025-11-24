@@ -12,23 +12,17 @@ def agent_dashboard(request):
     tickets = Ticket.objects.filter(assign_to = request.user)
     comments = Comment.objects.filter(user=request.user)
 
-    key = lambda obj:getattr(obj,"created_at",getattr(obj,"update_at",None))
-
-    activities = sorted(chain(tickets,comments),key=key,reverse=True)[:20]
-
-    for activity in activities:
-        activity.model = activity.__class__.__name__
+    open_tickets = Ticket.objects.filter(status="open")
 
     progress_tickets = tickets.filter(status="progress")
     closed_tickets = tickets.filter(status="closed")
-    recent_tickets = tickets.order_by("-update_at")[:10]
     
     context = {
         "tickets":tickets,
         "progress_tickets":progress_tickets,
         "closed_tickets":closed_tickets,
-        "recent_tickets":recent_tickets,
-        "activities":activities,
+        "comments":comments,
+        "open_tickets":open_tickets,
     }
 
     return render(request,"agent/dashboard.html",context)
