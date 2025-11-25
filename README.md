@@ -9,6 +9,19 @@ Designed with a responsive UI using Tailwind and optimized database operations.
 
 ---
 
+## 🛠️ Setup Instructions
+
+```bash
+git clone https://github.com/Mohan3C/Technical_support_management.git
+cd Technical_support_management
+
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+
+```
+---
+
 ## 🚀 Features
 
 ### **User Features**
@@ -68,16 +81,5 @@ This project is for educational and portfolio use.
 
 ---
 
-## 🛠️ Setup Instructions
-
-```bash
-git clone https://github.com/Mohan3C/Technical_support_management.git
-cd Technical_support_management
-
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-
-```
 
 
