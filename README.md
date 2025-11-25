@@ -41,6 +41,7 @@ Designed with a responsive UI using Tailwind and optimized database operations.
 
 ## 📂 Project Structure
 
+```
 tsm/
 ├── media
 |    ├── comment_attachments/
@@ -57,7 +58,13 @@ tsm/
 ├── tsm/# project config
 └── manage.py
 
+```
+--- 
 
+
+## 📜 License
+
+This project is for educational and portfolio use.
 
 ---
 
@@ -71,8 +78,6 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 
+```
 
 
-📜 License
-
-This project is for educational and portfolio use.
