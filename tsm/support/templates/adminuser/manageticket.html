@@ -2,13 +2,14 @@
 
 {% block content %}
 
-<div class="py-5 bg-gray-200 h-[717px] overflow-y-scroll px-20 ">
-    <div class="py-2 mx-3 mb-3 flex flex-col">
-        <h2 class="px-4 py-2 font-bold text-xl text-xl ">Manage Tickets</h2>
-        <span class="text-gray-500 text-sm px-4 font-semibold">Monitor, assign, and resolve all support tickets</span>
+<div class=" h-[670px] overflow-y-scroll px-16 ">
+   
+    <div class="my-16  flex flex-col">
+        <h2 class="text-2xl font-bold text-gray-800">Manage Tickets</h2>
+        <p class="text-gray-600 mt-2">Monitor, assign, and resolve all support tickets</p>
     </div>
-    <div class="flex flex-1 w-full px-3 mb-5 mt-10">
-        <div class=" flex flex-row w-[30%] px-4 bg-white rounded-lg items-center">
+    <div class="flex flex-1 w-full  mb-5 mt-10">
+        <div class=" flex flex-row w-[350px] px-4 bg-white rounded-lg items-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6 text-gray-500">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -18,7 +19,7 @@
             <input type="text" name="" class="px-6 py-2 focus:outline-none focus:ring-0"
                 placeholder="search by ID,Subject or Type .. ">
         </div>
-        <div class="flex flex-1 justify-end px-10 items-center border rounded-b-lg">
+        <div class="flex flex-1 justify-end items-center gap-5 rounded-b-lg">
             <div class=" text-gray-500">
                 <button
                     class="px-2 py-2 bg-white rounded-lg border hover:bg-blue-400 hover:text-white hover:border-blue-500 ">Type</button>
@@ -27,9 +28,9 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col bg-white mx-3 px-[2%] py-5 rounded-lg">
+    <div class="flex flex-col bg-white px-8 py-5 rounded-lg">
         <h2 class="pb-2 font-bold">Open Tickets</h2>
-        <div class=" flex flex-1 justify-center px-0 {% if open_tickets %} border rounded-t-lg{% endif %}">
+        <div class=" flex flex-1 justify-center {% if open_tickets %} border rounded-t-lg{% endif %}">
             {% if open_tickets %}
             <table class=" w-full">
                 <thead>
@@ -74,7 +75,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col bg-white mx-3 px-[2%] mt-5 py-5 rounded-lg">
+    <div class="flex flex-col bg-white px-8 mt-5 py-5 rounded-lg">
         <h2 class="pb-2 font-bold">Open Tickets by Priority </h2>
         <div class=" flex flex-1 justify-center  {% if tickets_by_priority %}border rounded-t-lg{% endif %}">
             {% if tickets_by_priority %}
@@ -118,7 +119,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="flex flex-col bg-white mx-3 px-[2%] my-5 py-5 rounded-lg">
+    <div class="flex flex-col bg-white px-8 my-5 py-5 rounded-lg">
         <h2 class="pb-2 font-bold">In Progress Tickets</h2>
         <div class=" flex flex-1 justify-center h-[100px] overflow-y-auto {% if progress_tickets %}border rounded-t-lg{% endif %}">
             {% if progress_tickets %}
@@ -165,7 +166,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col bg-white mx-3 px-[2%] py-5 rounded-lg">
+    <div class="flex flex-col bg-white px-8 py-5 rounded-lg">
         <h2 class="pb-2 font-bold">Closed Tickets</h2>
         <hr>
         <div class="flex flex-1 justify-center {% if closed_tickets %} border rounded-t-lg{% endif %} ">
