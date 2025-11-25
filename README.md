@@ -1,43 +1,78 @@
-⭐ README for TSM – Ticket Support Management System
-TSM – Ticket Support Management System
 
-A ticketing system built using Django that streamlines issue creation, assignment, updates, and resolution.
 
-🔧 Features
-User Features
+# ⭐ TSM – Ticket Support Management System
 
-Create new support tickets
 
-View ticket status
 
-Track ticket updates in real time
+A Django-based ticketing system for creating, assigning, updating, and resolving support tickets.  
+Designed with a responsive UI using Tailwind and optimized database operations.
 
-Agent Features
+---
 
-Assign tickets
+## 🚀 Features
 
-Update ticket status
+### **User Features**
+- Create support tickets  
+- View ticket status and progress  
+- Track updates in real time  
 
-Add comments or progress notes
+### **Agent Features**
+- Assign tickets  
+- Update ticket status (In-Progress, Resolved, etc.)  
+- Add comments or notes  
+- Manage ticket workflows  
 
-Handle ticket resolution workflow
+### **System Features**
+- Real-time status updates  
+- Responsive Tailwind UI  
+- Clean and fast database queries  
+- Role-based functionality  
 
-System Features
+---
 
-Real-time ticket status updates
+## 🧩 Tech Stack
 
-Responsive UI using Tailwind
+- **Backend:** Django, Python  
+- **Frontend:** HTML, CSS, Tailwind  
+- **Database:** SQLite / PostgreSQL  
+- **Tools:** Git, GitHub  
 
-Optimized database queries for smooth performance
+---
 
-🏗️ Tech Stack
+## 📂 Project Structure
 
-Backend: Django, Python
+tsm/
+├── media
+|    ├── comment_attachments/
+|    └── ticket_attachments/
+|
+├── support
+|    |     
+|    ├── migrations/
+|    ├── static/
+|    ├── templates/
+|    ├── templatetages/
+|    └── # project .py files
+|
+├── tsm/# project config
+└── manage.py
 
-Frontend: HTML, CSS, Tailwind
 
-Database: SQLite/PostgreSQL
 
-Tools: Git, GitHub
+---
 
-📂 Project Structure
+## 🛠️ Setup Instructions
+
+```bash
+git clone https://github.com/Mohan3C/Technical_support_management.git
+cd Technical_support_management
+
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+
+
+
+📜 License
+
+This project is for educational and portfolio use.
